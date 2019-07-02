@@ -1,11 +1,11 @@
 <template>
     <div class="footer-container">
       <div class="footer-content">
-        <span class="filing">{{filing}}</span>
+        <span class="filing" v-if="filing">{{filing}}</span>
         <el-divider direction="vertical" v-if="filing"></el-divider>
-        <span class="copyright">copyright&copy;{{copyright}}</span>
+        <span class="copyright" v-if="copyright">copyright&copy;{{copyright}}</span>
         <el-divider direction="vertical" v-if="copyright"></el-divider>
-        <span>
+        <span v-if="urlOsl">
           非商业用途请遵循
           <el-link :href="urlOsl" target="_blank" type="primary">{{openSourceLicense}}</el-link>
         </span>
@@ -30,12 +30,13 @@ export default newVar
 </script>
 
 <style scoped lang="less">
+  @import '~@/style/mixin';
   .footer-container {
-    .footer-content {
-      margin-top: 50px;
-      padding: 15px 0;
-      border-top: 1px solid #ddd;
-      font-size: .9rem;
-    }
+    height: 45px;
+    .flexH;
+    .flexV;
+    border-top: 1px solid #ddd;
+    .fontS(.9rem);
+    box-sizing: border-box;
   }
 </style>

@@ -1,26 +1,26 @@
 import axios from 'axios'
 import {baseUrl} from '@/config/env'
-// import {Loading} from 'element-ui'
-import Vue from 'vue'
 
 axios.defaults.baseURL = baseUrl
 
 const async = (url, method = 'GET', data) => {
-  let loading = Vue.prototype.$loading({
-    lock: true,
-    text: '请稍等',
-    target: document.querySelector('.loading-text')
-  })
   method = method.toUpperCase()
   if (method === 'GET') {
+    if (data) {
+      url += '?'
+      for (let key in data) {
+        url += key + '=' + data[key] + '&'
+      }
+      url = url.slice(0, -1)
+    }
     return new Promise((resolve, reject) => {
       axios.get(url)
         .then((response) => {
-          loading.close()
+          // loading.close()
           resolve(response.data)
         })
         .catch(error => {
-          loading.close()
+          // loading.close()
           reject(error)
         })
     })
@@ -31,7 +31,7 @@ const async = (url, method = 'GET', data) => {
           resolve(response.data)
         })
         .catch(error => {
-          loading.close()
+          // loading.close()
           reject(error)
         })
     })
@@ -39,11 +39,11 @@ const async = (url, method = 'GET', data) => {
     return new Promise((resolve, reject) => {
       axios.put(url, data)
         .then(response => {
-          loading.close()
+          // loading.close()
           resolve(response.data)
         })
         .catch(error => {
-          loading.close()
+          // loading.close()
           reject(error)
         })
     })

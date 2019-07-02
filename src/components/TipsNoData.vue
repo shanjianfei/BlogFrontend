@@ -1,12 +1,17 @@
 <template>
-  <div class="tips-container">
+  <div class="tips-container" v-if="showTip">
     <el-button type="warning" plain>目前还没有东西展示呢~~~</el-button>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'TipsNoData'
+  name: 'TipsNoData',
+  props: {
+    showTip: {
+      default: false
+    }
+  }
 }
 </script>
 

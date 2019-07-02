@@ -1,75 +1,99 @@
 <template>
-  <div class="header-container">
-    <el-collapse-transition>
-      <div class="full-hd" v-show="show && typeChoice === 0">
-        <el-row type="flex" align="middle" justify="center">
-          <el-col :span="6"  class="logo-container">
-            <a href="/">
-              <img :src="getImageUrl(logo)">
-            </a>
-            <span>{{motto}}</span>
-          </el-col>
-          <el-col :span="6">
-            <el-input placeholder="请输入内容" class="input-with-select" v-model="searchData">
-              <el-button slot="append" icon="el-icon-search" @click="search('title', searchData)"></el-button>
-            </el-input>
-          </el-col>
-          <el-col :span="12">
-            <el-menu
-              :default-active="activeItem"
-              mode="horizontal"
-              background-color="#2c3e50"
-              text-color="#fff"
-              active-text-color="#ffd04b"
-              @select="handleSelect">
-              <el-submenu index="select">
-                <template slot="title">文章</template>
-                <el-menu-item index="python">Python</el-menu-item>
-                <el-menu-item index="django">Django</el-menu-item>
-                <el-menu-item index="javascript">JavaScript</el-menu-item>
-                <el-menu-item index="linux">Linux</el-menu-item>
-              </el-submenu>
-              <el-menu-item index="timeline">时间轴</el-menu-item>
-              <el-menu-item index="about">关于</el-menu-item>
-            </el-menu>
-          </el-col>
-        </el-row>
-      </div>
-    </el-collapse-transition>
-    <el-collapse-transition>
-      <div class="brief-hd" v-show="show && typeChoice === 1">
-        <el-row type="flex" align="middle" justify="center">
-          <el-col :span="6">
-            <i class="el-icon-menu"></i>
-          </el-col>
-          <el-col :span="12">
-            <a href="/">
-              <img :src="getImageUrl(logo)">
-            </a>
-            <span>{{motto}}</span>
-          </el-col>
-          <el-col :span="6">
-            <i class="el-icon-search"></i>
-          </el-col>
-        </el-row>
-      </div>
-    </el-collapse-transition>
+  <div class="header-container" id="header">
+    <div class="header-hor">
+      <el-collapse-transition>
+        <div class="full-hd" v-show="show">
+          <el-row type="flex" align="middle" justify="center">
+            <el-col :span="6"  class="logo-container">
+              <a href="/">
+                <el-image :src="getImageUrl(logo)">
+                  <div slot="error" class="image-slot">
+                    <i class="el-icon-picture-outline"></i>
+                  </div>
+                </el-image>
+              </a>
+              <span>{{motto}}</span>
+            </el-col>
+            <el-col :span="6">
+              <input-search @search="search"></input-search>
+            </el-col>
+            <el-col :span="12">
+              <el-menu
+                :default-active="activeItem"
+                mode="horizontal"
+                background-color="#2c3e50"
+                text-color="#fff"
+                active-text-color="#ffd04b"
+                @select="handleSelect">
+                <el-submenu index="article" v-if="articleCategory.length">
+                  <template slot="title">文章</template>
+                  <el-menu-item v-for="(item, i) in articleCategory" :key="i" :index="item.category">{{item.category}}</el-menu-item>
+                </el-submenu>
+                <el-menu-item index="timeline">时间轴</el-menu-item>
+                <el-menu-item index="about">关于</el-menu-item>
+                <el-menu-item index="rss">
+                  RSS订阅
+                </el-menu-item>
+              </el-menu>
+            </el-col>
+          </el-row>
+        </div>
+      </el-collapse-transition>
+      <el-collapse-transition>
+        <div class="brief-hd">
+          <el-row type="flex" align="middle" justify="center">
+            <el-col :span="6">
+              <i class="el-icon-menu" @click="showAsideNav"></i>
+            </el-col>
+            <el-col :span="12">
+              <transition name="el-zoom-in-top">
+                <div v-show="!showSearch">
+                  <a href="/">
+                    <el-image :src="getImageUrl(logo)">
+                      <div slot="error" class="image-slot">
+                        <i class="el-icon-picture-outline"></i>
+                      </div>
+                    </el-image>
+                  </a>
+                  <span>{{motto}}</span>
+                </div>
+              </transition>
+              <transition name="el-zoom-in-bottom">
+                <div v-show="showSearch">
+                  <input-search @search="search"></input-search>
+                </div>
+              </transition>
+            </el-col>
+            <el-col :span="6">
+              <i class="el-icon-search" @click="showSearch = !showSearch"></i>
+            </el-col>
+          </el-row>
+        </div>
+      </el-collapse-transition>
+    </div>
+    <transition name="el-zoom-in-left">
+      <aside-nav v-if="asideNav" @select="handleSelect" @click.native="handleClickAsideNavWrap" :articleCategory="articleCategory"></aside-nav>
+    </transition>
   </div>
 </template>
 
 <script>
 import {mapState} from 'vuex'
 import {getImageUrl} from '@/config/util'
+import {getArticleCategory} from '@/api/api'
+import InputSearch from '@/components/InputSearch'
+import AsideNav from '@/components/AsideNav'
 
 export default {
   name: 'Head',
   data () {
     return {
-      searchData: '',
       activeItem: '',
       show: true,
       pageYOffset: 0,
-      typeChoice: 0
+      showSearch: false,
+      articleCategory: [],
+      asideNav: false
     }
   },
   computed: {
@@ -78,119 +102,150 @@ export default {
       motto: 'motto'
     })
   },
+  components: {InputSearch, AsideNav},
   methods: {
-    handleSelect: function (index, indexPath) {
-      if (indexPath.length === 2) {
-        this.$router.push({path: '/', query: {category: index}})
-      } else if (index === 'timeline') {
-        this.$router.push({path: ('/' + index)})
-      } else if (index === 'about') {
-        this.$router.push({path: ('/article/5')})
-      }
-    },
-    search (field, data) {
-      let query = {}
-      query[field] = data
+    search (data) {
       if (data) {
-        this.$router.push({path: '/home', query})
+        let query = {}
+        query['title'] = data
+        this.$router.push({path: '/article', query})
       }
     },
     getImageUrl (originUrl) {
       return getImageUrl(originUrl)
+    },
+    showAsideNav () {
+      this.asideNav = !this.asideNav
+    },
+    handleClickAsideNavWrap (event) {
+      if (event.target.className === 'aside-menu-container') {
+        this.asideNav = false
+      }
+    },
+    handleSelect (index, indexPath) {
+      this.asideNav = false
+      document.body.style.overflow = 'auto'
+      if (indexPath.length === 2) {
+        this.$router.push({path: '/article', query: {category: index}})
+      } else if (index === 'timeline') {
+        this.$router.push({path: '/timeline'})
+      } else if (index === 'about') {
+        this.$router.push({path: '/article', query: {category: 'about'}})
+      } else if (index === 'rss') {
+        let {href} = this.$router.resolve('/rss')
+        window.open(href)
+      }
     }
   },
-  created: function () {
+  mounted: function () {
     let self = this
+    if (window.pageYOffset > 60) {
+      this.show = false
+      this.pageYOffset = window.pageYOffset
+    }
     window.addEventListener('scroll', function () {
-      let yOffset = window.pageYOffset
-      if (yOffset > self.pageYOffset) {
+      if (window.pageYOffset > self.pageYOffset) {
         self.show = false
       } else {
         self.show = true
       }
-      self.pageYOffset = yOffset
+      self.pageYOffset = window.pageYOffset
     })
-    window.addEventListener('resize', function () {
-      console.log(1)
-      if (document.body.clientWidth > 860) {
-        self.typeChoice = 0
-      } else {
-        self.typeChoice = 1
-      }
-    })
+    getArticleCategory()
+      .then(function (data) {
+        self.articleCategory = data
+      })
   }
 }
 </script>
 
-<style scoped lang="less">
-  .header-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 60px;
-    z-index: 100;
-    .full-hd {
-      background-color: #2c3e50;
-      .el-col {
-        background-color: #2c3e50;
-      }
-      .el-col:last-child {
-        ul {
-          margin-right: 20px;
-          display: flex;
-          justify-content: flex-end;
+<style lang="less">
+  @import '~@/style/mixin';
+  @import '~@/style/base';
+  #header {
+    .span {
+      .fontSC(.85rem, @base-white);
+    }
+    img {
+      .wh(50px, 50px);
+      .borderRadius(50%);
+      .padding(5px, 0);
+      vertical-align: middle;
+    }
+    .el-icon-picture-outline {
+      .fontC(@base-white);
+    }
+    .header-hor {
+      display: block;
+      .full-hd {
+        .bgc(#2c3e50);
+
+        .el-col {
+          .bgc(#2c3e50);
+        }
+
+        .el-col:last-child {
+          ul {
+            .flexH(flex-end);
+            .margin(right, 20px);
+          }
+        }
+
+        .logo-container {
+          span {
+            .span;
+          }
+        }
+
+        .el-menu--horizontal {
+          border: none;
         }
       }
-      .logo-container {
-        align-items: center;
-        img {
-          width: 50px;
-          height: 50px;
-          padding: 5px 0;
-          border-radius: 50%;
-          vertical-align: middle;
+
+      .brief-hd {
+        display: none;
+        .bgc(#2c3e50);
+
+        .el-row {
+          .h(60px);
+
+          .el-col:first-child {
+            text-align: left;
+
+            i {
+              .fontSC(1.5rem, @base-white);
+              .margin(left, 15px);
+            }
+          }
+
+          .el-col:nth-child(2) {
+            span {
+              .span;
+            }
+          }
+
+          .el-col:last-child {
+            text-align: right;
+
+            i {
+              .fontSC(1.5rem, @base-white);
+              .margin(right, 15px);
+            }
+          }
         }
-        span {
-          /*line-height: 60px;*/
-          color: #fff;
-          font-size: .85rem;
-        }
-      }
-      .el-menu--horizontal {
-        border: none;
       }
     }
-    .brief-hd {
-      background-color: #2c3e50;
-      .el-col:first-child {
-        text-align: left;
-        i {
-          margin-left: 15px;
-          color: white;
-          font-size: 1.5rem;
-        }
-      }
-      .el-col:nth-child(2) {
-        img {
-          width: 50px;
-          height: 50px;
-          padding: 5px 0;
-          border-radius: 50%;
-          vertical-align:middle;
-        }
-        span {
-          color: white;
-          font-size: .85rem;
-          vertical-align:middle;
-        }
-      }
-      .el-col:last-child {
-        text-align: right;
-        i {
-          margin-right: 15px;
-          font-size: 1.5rem;
-          color: white;
+  }
+  body {
+    @media screen and (max-width: 860px) {
+      #header {
+        .header-hor {
+          .full-hd {
+            .displayN;
+          }
+          .brief-hd {
+            .display;
+          }
         }
       }
     }

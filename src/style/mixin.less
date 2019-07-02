@@ -1,0 +1,188 @@
+// 设置圆角边框
+.borderRadius(@radius) {
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+  border-radius: @radius;
+}
+
+// 绝对定位
+.fixed(@left, @top, @right, @bottom) {
+  position: fixed;
+  left: @left;
+  top: @top;
+  right: @right;
+  bottom: @bottom;
+}
+
+// 顶部定位
+.fixedTop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+// 底部定位
+.fixedBottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+// 全屏
+.abs(full) {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+// 顶部绝对定位
+.abs(top) {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+// 底部绝对定位
+.abs(bottom) {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+//设置宽高
+.wh(@width, @height) {
+  width: @width;
+  height: @height;
+}
+
+.w100() {
+  width: 100%;
+}
+
+.w(@w) {
+  width: @w;
+}
+
+.h100() {
+  height: 100%;
+}
+
+.h(@h) {
+  height: @h;
+}
+
+// 设置背景图片
+.bgImg(@url, @repeat: no-repeat) {
+  background-image: url(@url);
+  background-repeat: @repeat;
+}
+
+// 背景颜色
+.bgc(@color) {
+  background-color: @color;
+}
+
+// 水平布局
+.flexH(@jc: center) {
+  display: flex;
+  justify-content: @jc;
+}
+
+// 垂直布局
+.flexV(@ai: center) {
+  display: flex;
+  align-items: center;
+}
+
+// 层叠
+.z-index(@index:1) {
+  z-index: @index;
+}
+
+// 字体大小
+.fontS(@size: 14px) {
+  font-size: @size;
+}
+
+// 字体颜色
+.fontC(@color: @base-black) {
+  color: @color;
+}
+
+// 字体大小颜色
+.fontSC(@size: 14px, @color) {
+  font-size: @size;
+  color: @color
+}
+
+// 加粗
+.fontW700() {
+  font-weight: 700;
+}
+
+// 普通
+.fontW400() {
+  font-weight: 700;
+}
+
+.fontW(@weight) {
+  font-weight: @weight;
+}
+
+.display() {
+  display: block;
+}
+
+.displayI() {
+  display: inline-block;
+}
+
+.displayN() {
+  display: none;
+}
+
+.margin(...) {
+  margin: @arguments;
+}
+
+.margin(left, @size) {
+  margin-left: @size;
+}
+
+.margin(top, @size) {
+  margin-top: @size;
+}
+
+.margin(right, @size) {
+  margin-right: @size;
+}
+
+.margin(bottom, @size) {
+  margin-bottom: @size;
+}
+
+.padding(...) {
+  padding: @arguments;
+}
+
+.padding(left, @size) {
+  padding-left: @size;
+}
+
+.padding(top, @size) {
+  padding-top: @size;
+}
+
+.padding(right, @size) {
+  padding-right: @size;
+}
+
+.padding(bottom, @size) {
+  padding-bottom: @size;
+}

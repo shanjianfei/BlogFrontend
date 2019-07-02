@@ -9,6 +9,12 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="less">
+  @import '~@/style/mixin';
+  @import "~@/style/base";
+  .more {
+    .el-link--inner {
+      .fontC(@common-blue);
+    }
+  }
 </style>

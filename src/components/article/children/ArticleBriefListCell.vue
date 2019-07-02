@@ -1,9 +1,13 @@
 <template>
-  <div class="article-list-container">
-    <el-row class="content-article" :gutter="1" type="flex" align="middle">
-      <el-col class="article-base-info" :span="article.picture ? 18 : 24">
+  <div class="article-brief-container" v-if="article">
+    <el-row :gutter="1" type="flex" align="middle">
+      <el-col class="article" :span="article.picture ? 18 : 24">
         <div class="article-title">
-          <el-link @click="$router.push({path: 'article/' + article.id})">{{article.title}}</el-link>
+          <el-link
+            :underline="false"
+            @click="$router.push({path: 'article/' + article.id})">
+            {{article.title}}
+          </el-link>
         </div>
         <div class="article-tag">
           <ul>
@@ -23,7 +27,7 @@
         <div class="article-base-info">
         <ul>
           <li>
-            {{article.update_time | formatDatetime}}
+            {{article.update_time | formatDate('yyyy-MM-dd hh:mm:ss')}}
           </li>
           <li>
             <i class="el-icon-view"></i>
@@ -43,9 +47,9 @@
         </ul>
       </div>
       </el-col>
-      <el-col class="article-image" :span="6" v-if="article.picture">
+      <el-col class="article-image-container" :span="6" v-if="article.picture">
         <el-image
-          style="height: 100px; width: 130px;"
+          class="article-image"
           :src="getImageUrl(article.picture)">
         </el-image>
       </el-col>
@@ -55,8 +59,8 @@
 
 <script>
 import LinkShowMore from '@/components/LinkShowMore'
-import Vue from 'vue'
 import {getImageUrl} from '@/config/util'
+import {util} from '@/config/mixin'
 
 export default {
   name: 'Article',
@@ -71,56 +75,59 @@ export default {
       return getImageUrl(imageUrl)
     }
   },
-  filters: {
-    formatDatetime (value) {
-      return Vue.formatDate(new Date(value), 'yyyy-MM-dd hh:mm:ss')
-    }
-  }
+  mixins: [util]
 }
 </script>
 
 <style scoped lang="less">
-  .article-container {
+  @import '~@/style/mixin.less';
+  @import "~@/style/base.less";
+  .article-brief-container {
+    .margin(top, 10px);
     text-align: left;
-    .content-article:hover {
-      border-color: #ddd;
+    border: 1px solid @border-3;
+    .borderRadius(.2rem);
+    .padding(15px);
+    &:hover {
+      border-color: @border-1;
     }
-    .content-article {
-      border: 1px solid #eee;
-      border-radius: .2rem;
-      padding: 15px;
-      .article-image {
-        text-align: center;
-        .el-image__inner {
-          border-radius: 30px;
-        }
+    .article-image-container {
+      text-align: center;
+      .el-image {
+        .wh(130px, 100px);
       }
-      .article-base-info {
-        li {
-          display: inline-block;
-          margin-right: 20px;
-          color: #999;
-          font-size: .8rem;
-        }
-        li:hover {
-          color: #CC9933;
-          cursor: pointer;
-        }
-        .article-title {
-          a {
-            font-size: 1.5rem;
+    }
+    .article {
+      .article-title {
+        .el-link {
+          .fontSC(1.5rem, @main-word);
+          &:hover {
+            .fontC(@common-blue);
           }
         }
-        .article-tag {
-          margin: 15px 0;
-        }
-        .article-content {
-          font-size: .95rem;
+      }
+      &-tag {
+        .margin(15px, 0);
+        li {
+          .displayI;
+          .margin(right, 5px);
         }
       }
-    }
-    .more {
-      margin-left: 10px;
+      &-content {
+        .fontSC(.95rem, @common-word);
+      }
+      &-base-info {
+        li {
+          .displayI;
+          .margin(right, 20px);
+          .fontSC(.8rem, @secondary-word);
+
+          &:hover {
+            .fontC(@common-yellow);
+            cursor: pointer;
+          }
+        }
+      }
     }
   }
 </style>

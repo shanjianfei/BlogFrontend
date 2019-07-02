@@ -1,5 +1,8 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
+import Timeline from './modules/timeline'
+import ArticleList from './modules/articleList'
+
 Vue.use(Vuex)
 
 const store = new Vuex.Store(
@@ -26,6 +29,11 @@ const store = new Vuex.Store(
       updateSiteInfo ({commit}, siteInfo) {
         commit('updateSiteInfo', siteInfo)
       }
+    },
+    // 子模块管理
+    modules: {
+      timeline: Timeline,
+      articleList: ArticleList
     }
   }
 )

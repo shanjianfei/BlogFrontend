@@ -12,10 +12,12 @@ export default {
 
 <style lang="less">
   @import "./style/common.less";
+  @import "./style/base";
   #app {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
-    color: #2c3e50;
+    color: @main-word;
+    height: 100%;
   }
 </style>

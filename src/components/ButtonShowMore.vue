@@ -1,21 +1,33 @@
 <template>
   <div class="button-container">
-    <el-button type="primary" @click="$emit('loadMore')" :disabled="!status.enable">{{status.text}}</el-button>
+    <el-button type="primary" @click="$emit('loadMore')" :disabled="!status.status">{{status.text}}</el-button>
   </div>
 </template>
 
 <script>
 export default {
   name: 'ButtonShowMore',
-  props: ['status']
+  props: {
+    status: {
+      type: Object,
+      default: function () {
+        return {
+          status: false,
+          text: '加载完毕'
+        }
+      }
+    }
+  }
 }
 </script>
 
 <style scoped lang="less">
+  @import '~@/style/mixin';
+  @import '~@/style/base';
   .button-container {
-    margin: 60px;
+    .margin(60px);
     button {
-      width: 100%;
+      .w100;
     }
   }
 </style>

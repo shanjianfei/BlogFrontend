@@ -98,17 +98,18 @@ export default {
         brief_introduction: ''}
     }
   },
-  created: function () {
-    this.articleId = this.$route.params.id
-    let self = this
-    getArticleDetail(this.articleId)
-      .then(function (data) {
-        self.article = data
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
-    this.getComments()
+  watch: {
+    '$route': function (to, from) {
+      let self = this
+      let articleId = to.params.id
+      getArticleDetail(articleId)
+        .then(function (data) {
+          self.article = data
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    }
   },
   methods: {
     giveLike: function () {
@@ -138,7 +139,7 @@ export default {
     },
     returnComments: function () {
       let eleCom = document.querySelector('#comments')
-      if (!!eleCom) {
+      if (eleCom) {
         eleCom.scrollIntoView({block: 'start', inline: 'nearest', behavior: 'smooth'})
       }
     }
@@ -147,6 +148,21 @@ export default {
     formatDatetime (val) {
       return Vue.formatDate(new Date(val), 'yyyy-MM-dd hh:mm:ss')
     }
+  },
+  created: function () {
+    window.scrollTo({
+      top: 0
+    })
+    this.articleId = this.$route.params.id
+    let self = this
+    getArticleDetail(this.articleId)
+      .then(function (data) {
+        self.article = data
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+    this.getComments()
   }
 }
 </script>
@@ -155,7 +171,7 @@ export default {
   .article-detail-container {
     text-align: left;
     max-width: 850px;
-    margin: 20px auto;
+    margin: 0px auto;
     margin-bottom: 55px;
     border-bottom: 1px dotted #999999;
     .article-title {
