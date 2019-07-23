@@ -1,6 +1,8 @@
 import async from '@/config/async'
 
-export const getTagList = () => async('/taglist/')
+// 获取所有标签
+export const getTags = () => async('/tag/')
+
 export const getArticleDetail = (id) => async('/articledetail/' + id + '/')
 export const giveLike = (articleId) => async('/articledetail/' + articleId + '/', 'PUT', {like: true, author: 'xiao_t'})
 

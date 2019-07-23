@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import {getTagList} from '@/api/api'
+import {getTags} from '@/api/api'
 import TagListCell from './children/TagListCell'
 export default {
   name: 'TagList',
@@ -22,7 +22,7 @@ export default {
   components: {TagListCell},
   created: function () {
     let self = this
-    getTagList()
+    getTags()
       .then(function (data) {
         self.tags = data
       })

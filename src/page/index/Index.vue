@@ -54,7 +54,7 @@ export default {
       getSiteInfo()
         .then(function (data) {
           if (data.length) {
-            self.$store.dispatch('updateSiteInfo', data[0])
+            // self.$store.dispatch('updateSiteInfo', data[0])
           }
         })
     }

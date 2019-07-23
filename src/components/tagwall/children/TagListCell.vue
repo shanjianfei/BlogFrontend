@@ -3,7 +3,9 @@
     <el-tag
       class="tag"
       size="small"
-      :style="{'color': tag.color, 'border-color': tag.color, 'background-color': '#fff'}"
+      :color=tag.color
+      :hit="false"
+      effect="dark"
       @click="handleSelectTag(tag.label)">
       {{tag.label}} [{{tag.article_count}}]
     </el-tag>
@@ -38,6 +40,7 @@ export default {
     .displayI;
     .tag {
       cursor: pointer;
+      border: 0;
     }
   }
 </style>
