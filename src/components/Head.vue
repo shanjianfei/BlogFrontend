@@ -25,10 +25,28 @@
                 text-color="#fff"
                 active-text-color="#ffd04b"
                 @select="handleSelect">
-                <el-submenu index="article" v-if="articleCategory.length">
+                <!-- <el-submenu index="article" v-if="articleCategory.length">
                   <template slot="title">文章</template>
                   <el-menu-item v-for="(item, i) in articleCategory" :key="i" :index="item.category">{{item.category}}</el-menu-item>
+                </el-submenu> -->
+                <el-submenu :index="item.index" v-for="(item, index) in category" :key="index" v-if="item.sub_category.length>0">
+                  
+                  <template slot="title">{{item.name}}</template>
+                  
+
+                  <el-menu-item :index="category1.index" v-for="(category1, index1) in item.sub_category" v-if="category1.sub_categorylevel.length===0" :key="index1">{{category1.name}}</el-menu-item>
+                  <el-submenu :index="category1.index" v-for="(category1, index1) in item.sub_category" :key="index1" v-if="category1.sub_categorylevel.length>0">
+                    <template slot="title">{{category1.name}}</template>
+                    <el-menu-item :index="category2.index" v-for="(category2, index2) in category1.sub_categorylevel" v-if="category2.sub_categorylevel.length===0" :key="index2">{{category2.name}}</el-menu-item>
+                    <el-submenu :index="category2.index" v-for="(category2, index2) in category1.sub_categorylevel" v-if="category2.sub_categorylevel.length>0" :key="index2">
+                      <template slot="title">{{category2.name}}</template>
+                      <el-menu-item :index="category3.index" v-for="(category3, index3) in category2.sub_categorylevel" :key="index3">{{category3.name}}</el-menu-item>
+                      <el-menu-item :index="category3.index"></el-menu-item>
+                    </el-submenu>
+                  </el-submenu>
                 </el-submenu>
+                <el-menu-item :index="item.index" v-for="(item, index) in category" :key="index" v-if="item.sub_category.length===0">{{item.name}}</el-menu-item>
+
                 <el-menu-item index="timeline">时间轴</el-menu-item>
                 <el-menu-item index="about">关于</el-menu-item>
                 <el-menu-item index="rss">
@@ -80,7 +98,7 @@
 <script>
 import {mapState} from 'vuex'
 import {getImageUrl} from '@/config/util'
-import {getArticleCategory} from '@/api/api'
+import {getCategory} from '@/api/api'
 import InputSearch from '@/components/InputSearch'
 import AsideNav from '@/components/AsideNav'
 
@@ -92,7 +110,7 @@ export default {
       show: true,
       pageYOffset: 0,
       showSearch: false,
-      articleCategory: [],
+      category: [],
       asideNav: false
     }
   },
@@ -151,9 +169,10 @@ export default {
       }
       self.pageYOffset = window.pageYOffset
     })
-    getArticleCategory()
+    getCategory()
       .then(function (data) {
-        self.articleCategory = data
+        self.category = data
+        console.log(data)
       })
   }
 }

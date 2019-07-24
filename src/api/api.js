@@ -3,6 +3,9 @@ import async from '@/config/async'
 // 获取所有标签
 export const getTags = () => async('/tag/')
 
+// 获取总分类
+export const getCategory = () => async('/categorylevel/')
+
 export const getArticleDetail = (id) => async('/articledetail/' + id + '/')
 export const giveLike = (articleId) => async('/articledetail/' + articleId + '/', 'PUT', {like: true, author: 'xiao_t'})
 
