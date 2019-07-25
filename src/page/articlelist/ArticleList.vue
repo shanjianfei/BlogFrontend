@@ -12,18 +12,28 @@
 </template>
 
 <script>
-import ArticleBriefList from '@/components/article/Article'
+// import ArticleBrief from './children/ArticleBriefListCell'
 import Tags from '@/components/tagwall/TagList'
 import RecommendList from '@/components/recommend/RecommendList'
 import HotArticleList from '@/components/hotarticle/HotArticleList'
 
+// from 
+
 export default {
   name: 'ArticleList',
+  data () {
+    return {
+      article: undefined
+    }
+  },
   components: {
-    ArticleBriefList,
+    // ArticleBriefList,
     Tags,
     RecommendList,
     HotArticleList
+  },
+  created: function () {
+    getArticles
   }
 }
 </script>

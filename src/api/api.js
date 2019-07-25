@@ -6,7 +6,19 @@ export const getTags = () => async('/tag/')
 // 获取总分类
 export const getCategory = () => async('/categorylevel/')
 
-export const getArticleDetail = (id) => async('/articledetail/' + id + '/')
+// 获取文章列表
+export const getArticles = (page, size) => async('/article/', 'GET',
+  {
+    page: page || 1,
+    size: size || 6
+  })
+
+// 获取文章详情
+export const getArticleDetail = (id) => async('/article/' + id + '/')
+
+// 文章点赞
+export const articleLike = (id) => async('/article/' + id + '/', 'PUT', {like: true})
+
 export const giveLike = (articleId) => async('/articledetail/' + articleId + '/', 'PUT', {like: true, author: 'xiao_t'})
 
 // 给评论点赞
@@ -42,7 +54,7 @@ export const getRecommendArticle = (page, size) => async('/articlelist/', 'GET',
   })
 
 // 获取热门文章
-export const getHotArticle = (page, size) => async('/articlelist/', 'GET',
+export const getHotArticle = (page, size) => async('/article/', 'GET',
   {
     ordering: '-click',
     page: page || 1,
@@ -50,7 +62,7 @@ export const getHotArticle = (page, size) => async('/articlelist/', 'GET',
   })
 
 // 获取最新文章
-export const getLastedArticle = (page, size) => async('/articlelist/', 'GET',
+export const getLastedArticle = (page, size) => async('/article/', 'GET',
   {
     ordering: '-update_time',
     page: page || 1,

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '@/page/index/Index'
-import Home from '@/page/home/Home'
+import HomeContent from '@/components/home/HomeContent'
 import ArticleDetail from '@/page/article/ArticleDetail'
 import TimeLine from '@/page/timeline/TimeLine'
 import Articles from '@/page/articlelist/ArticleList'
@@ -26,7 +26,7 @@ export default new Router({
           path: 'home',
           components: {
             header: Header,
-            main: Home,
+            main: HomeContent,
             footer: Footer
           }
         },

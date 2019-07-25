@@ -1,4 +1,4 @@
-import {getArticleList} from '@/api/api'
+import {getArticles} from '@/api/api'
 
 const state = {
   articles: [], // 显示在首页的文章
@@ -51,7 +51,7 @@ const mutations = {
 
 const actions = {
   getArticleList ({commit}, {params, reset}) {
-    getArticleList(params).then(function (data) {
+    getArticles(params).then(function (data) {
       if (reset) {
         commit('reset')
       }

@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import ArticleBrief from '@/components/article/children/ArticleBriefListCell'
+// import ArticleBrief from '@/components/article/children/ArticleBriefListCell'
 import TipsNoData from '@/components/TipsNoData'
 import ButtonShowMore from '@/components/ButtonShowMore'
 import Tags from '@/components/tagwall/TagList'
@@ -33,7 +33,7 @@ export default {
     ...mapState('articleList', ['articles', 'nextPage', 'showTip', 'showMore', 'hotArticles', 'loading'])
   },
   components: {
-    ArticleBrief,
+    // ArticleBrief,
     TipsNoData,
     ButtonShowMore,
     Tags,

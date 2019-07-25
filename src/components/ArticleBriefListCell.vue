@@ -36,7 +36,7 @@
           </li>
           <li>
             <i class="el-icon-chat-line-square"></i>
-            <span>{{article.comment.length}}</span>
+            <span>{{article.comment_count}}</span>
             <span>评论</span>
           </li>
           <li>
@@ -64,7 +64,11 @@ import {util} from '@/config/mixin'
 
 export default {
   name: 'Article',
-  props: ['article'],
+  props: {
+    article: {
+      type: Object
+    }
+  },
   data () {
     return {
     }

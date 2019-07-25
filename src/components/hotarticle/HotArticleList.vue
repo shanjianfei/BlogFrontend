@@ -13,11 +13,16 @@ import SubnavSectionTitle from '@/components/SubnavSectionTitle'
 
 export default {
   name: 'HotArticleList',
+  props: {
+      articles: {
+          type: Array,
+          default: []
+      }
+  },
   data: function () {
     return {
       page: 1,
       size: 6,
-      articles: [],
       title: '热门'
     }
   },
