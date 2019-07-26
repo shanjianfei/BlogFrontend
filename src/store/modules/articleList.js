@@ -13,7 +13,6 @@ const state = {
 
 const mutations = {
   updateShowMore (state, {status, text}) {
-    console.log(status, text)
     state.showMore.status = !!status
     state.showMore.text = text || state.showMore.text
     console.log(state.showMore)

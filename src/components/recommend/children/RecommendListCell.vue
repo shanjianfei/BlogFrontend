@@ -1,9 +1,8 @@
 <template>
   <div class="recommend-list-cell">
     <div class="article-title">
-      <el-link
-        :underline="false"
-        @click="$router.push({path: 'article/' + article.id})">
+      <el-link :underline="false"
+               @click="$router.push({path: 'article/' + article.id})">
         {{article.title}}
       </el-link>
     </div>
@@ -20,7 +19,7 @@
         </li>
         <li>
           <i class="el-icon-chat-line-square"></i>
-          <span>{{article.comment.length}}</span>
+          <span>{{article.comment_count}}</span>
         </li>
         <li>
           <i class="el-icon-star-off"></i>
@@ -32,7 +31,7 @@
 </template>
 
 <script>
-import {util} from '@/config/mixin'
+import { util } from '@/config/mixin'
 export default {
   name: 'RecommendListCell',
   props: {
@@ -48,39 +47,41 @@ export default {
 </script>
 
 <style scoped lang="less">
-  @import '~@/style/mixin.less';
-  @import '~@/style/base.less';
-  .recommend-list-cell {
-    .margin(top, 15px);
-    text-align: left;
-    .article-title {
-      .el-link {
-        .fontS(1rem);
-      }
-    }
-    .article-base-info {
-      .margin(top, 5px);
-      display: flex;
-      justify-content: space-between;
-      &-left, &-right {
-        li {
-          .displayI;
-          .margin(right, 5px);
-          .fontC(@secondary-word);
-          .fontS(.8rem);
-
-          &:hover {
-            .fontC(@common-yellow);
-            cursor: pointer;
-          }
-        }
-      }
-      &-left {
-        text-align: left;
-      }
-      &-right {
-        text-align: right;
-      }
+@import "~@/style/mixin.less";
+@import "~@/style/base.less";
+.recommend-list-cell {
+  .padding(15px, 6px);
+  border-top: 1px solid @border-3;
+  text-align: left;
+  .article-title {
+    .el-link {
+      .fontS(1rem);
     }
   }
+  .article-base-info {
+    .margin(top, 5px);
+    display: flex;
+    justify-content: space-between;
+    &-left,
+    &-right {
+      li {
+        .displayI;
+        .margin(right, 5px);
+        .fontC(@secondary-word);
+        .fontS(0.8rem);
+
+        &:hover {
+          .fontC(@common-yellow);
+          cursor: pointer;
+        }
+      }
+    }
+    &-left {
+      text-align: left;
+    }
+    &-right {
+      text-align: right;
+    }
+  }
+}
 </style>

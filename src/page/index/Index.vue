@@ -8,12 +8,19 @@
     </main>
     <footer>
       <router-view name="footer"></router-view>
-      <div class="scroll-container" v-show="upIsShow">
+      <div class="scroll-container"
+           v-show="upIsShow">
         <el-row class="up-container">
-          <el-button class="up" size="small" icon="el-icon-caret-top" @click="backTop"></el-button>
+          <el-button class="up"
+                     size="small"
+                     icon="el-icon-caret-top"
+                     @click="backTop"></el-button>
         </el-row>
         <el-row class="down-container">
-          <el-button class="down" size="small" icon="el-icon-caret-bottom" @click="goDown"></el-button>
+          <el-button class="down"
+                     size="small"
+                     icon="el-icon-caret-bottom"
+                     @click="goDown"></el-button>
         </el-row>
       </div>
     </footer>
@@ -21,8 +28,9 @@
 </template>
 
 <script>
-import {getSiteInfo} from '@/api/api'
+import { getSiteInfo } from '@/api/api'
 import Top from '@/components/Top'
+import Login from '@/components/Login'
 export default {
   name: 'Index',
   data () {
@@ -31,7 +39,7 @@ export default {
       asideNav: false
     }
   },
-  components: {Top},
+  components: { Top, Login },
   methods: {
     backTop () { // 页面返回到顶部
       window.scrollTo(
@@ -50,7 +58,7 @@ export default {
       )
     },
     getSiteInfo () {
-      let self = this
+      // let self = this
       getSiteInfo()
         .then(function (data) {
           if (data.length) {
@@ -76,38 +84,39 @@ export default {
 }
 </script>
 <style scoped lang="less">
-  @import '~@/style/mixin';
-  @import '~@/style/base';
-  .index {
-    header {
-      .z-index(100);
-      .fixedTop;
+@import "~@/style/mixin";
+@import "~@/style/base";
+.index {
+  header {
+    .z-index(100);
+    .fixedTop;
+  }
+  main {
+    min-height: calc(100vh - 45px);
+    .margin(60px, auto, 0);
+    .padding(top, 15px);
+  }
+  .scroll-container {
+    position: fixed;
+    right: 30px;
+    bottom: 100px;
+    .fontC(@common-blue);
+    .down-container {
+      .margin(top, 5px);
     }
+    .up,
+    .down {
+      .display;
+      .fontC(@base-white);
+      .bgc(@common-gray);
+    }
+  }
+}
+body {
+  @media screen and (min-width: 1200px) {
     main {
-      min-height: calc(100vh - 45px);
-      .margin(60px, auto, 0);
-      .padding(top, 15px);
-    }
-    .scroll-container {
-      position: fixed;
-      right: 30px;
-      bottom: 100px;
-      .fontC(@common-blue);
-      .down-container {
-        .margin(top, 5px);
-      }
-      .up, .down {
-        .display;
-        .fontC(@base-white);
-        .bgc(@common-gray);
-      }
+      .w(1200px);
     }
   }
-  body {
-    @media screen and (min-width: 1200px) {
-      main {
-        .w(1200px);
-      }
-    }
-  }
+}
 </style>

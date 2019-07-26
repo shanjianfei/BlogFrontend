@@ -35,6 +35,7 @@ export default {
   @import '~@/style/base.less';
   .tag-list {
     border-left: 1px solid @border-3;
+    .bgc(@base-white);
     &-title {
       .flexV;
       text-align: left;

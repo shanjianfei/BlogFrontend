@@ -1,5 +1,5 @@
 <template>
-  <div class="article-detail-page">
+  <div class="article-detail-content">
     <div class="loading-text">
       <div class="article-detail-container">
         <header class="article-title">
@@ -8,7 +8,8 @@
         <section>
           <div class="article-tag">
             <ul>
-              <li v-for="(item, index) in article.tags" :key="index">
+              <li v-for="(item, index) in article.tags"
+                  :key="index">
                 {{item}}
               </li>
             </ul>
@@ -40,7 +41,7 @@
                   <span>{{comments.length}}</span>
                   <span>评论</span>
                 </li>
-                <li @click="giveLike">
+                <li @click="like">
                   <i class="el-icon-star-on"></i>
                   <span>{{article.like}}</span>
                   <span>点赞</span>
@@ -54,7 +55,8 @@
               {{ article.brief_introduction }}
             </p>
           </div>
-          <div class="article-content" v-html="article.content"></div>
+          <div class="article-content"
+               v-html="article.content"></div>
         </section>
         <footer>
           <span class="create-time">
@@ -67,8 +69,13 @@
           </span>
         </footer>
       </div>
-      <add-comment :articleId="articleId" :commentEnable="!article.comment_enable" v-on:add-comment="refreshComment"></add-comment>
-      <show-comment :articleId="articleId" ref="showComment"></show-comment>
+      <div class="comment-container">
+        <add-comment :articleId="articleId"
+                     :commentEnable="!article.comment_enable"
+                     v-on:add-comment="refreshComment"></add-comment>
+        <show-comment :articleId="articleId"
+                      ref="showComment"></show-comment>
+      </div>
     </div>
   </div>
 </template>
@@ -76,11 +83,11 @@
 <script>
 import AddComment from '@/components/AddComment'
 import ShowComment from '@/components/ShowComment'
-import {getArticleDetail, giveLike, getComments} from '@/api/api'
+import { getArticleDetail, articleLike, getComments } from '@/api/api'
 import Vue from 'vue'
 export default {
-  name: 'ArticleDetail',
-  components: {AddComment, ShowComment},
+  name: 'ArticleDetailContent',
+  components: { AddComment, ShowComment },
   data () {
     return {
       articleId: '',
@@ -95,7 +102,8 @@ export default {
         title: '',
         update_time: '',
         comment_enable: true,
-        brief_introduction: ''}
+        desc: ''
+      }
     }
   },
   watch: {
@@ -112,13 +120,13 @@ export default {
     }
   },
   methods: {
-    giveLike: function () {
+    like: function () {
       let self = this
-      giveLike(this.articleId)
+      articleLike(this.articleId)
         .then(function (data) {
-          self.article.like = data.like
+          self.article.like += 1
           self.$message({
-            message: '点赞成功',
+            message: data.result,
             type: 'success'
           })
         })
@@ -140,7 +148,7 @@ export default {
     returnComments: function () {
       let eleCom = document.querySelector('#comments')
       if (eleCom) {
-        eleCom.scrollIntoView({block: 'start', inline: 'nearest', behavior: 'smooth'})
+        eleCom.scrollIntoView({ block: 'start', inline: 'nearest', behavior: 'smooth' })
       }
     }
   },
@@ -168,73 +176,72 @@ export default {
 </script>
 
 <style scoped lang="less">
-  .article-detail-container {
-    text-align: left;
-    max-width: 850px;
-    margin: 0px auto;
-    margin-bottom: 55px;
-    border-bottom: 1px dotted #999999;
-    .article-title {
-      font-size: 1.8rem;
-      color: #333;
-      font-weight: 500;
+.article-detail-container {
+  text-align: left;
+  margin: 0px auto;
+  margin-bottom: 55px;
+  border-bottom: 1px dotted #999999;
+  .article-title {
+    font-size: 1.8rem;
+    color: #333;
+    font-weight: 500;
+  }
+  .article-tag {
+    margin: 15px 0;
+    li {
+      padding: 4px 6px;
+      display: inline-block;
+      margin-right: 0.8rem;
+      border-radius: 3px;
+      background-color: #cc9933;
+      color: #fff;
+      font-size: 0.6rem;
     }
-    .article-tag {
-      margin: 15px 0;
-      li {
-        padding: 4px 6px;
-        display: inline-block;
-        margin-right: .8rem;
-        border-radius: 3px;
-        background-color: #CC9933;
-        color: #fff;
-        font-size: .6rem;
-      }
-    }
-    .article-base-info {
-      .el-col:last-child {
-        text-align: right;
-      }
-      li {
-        display: inline-block;
-        margin-right: 20px;
-        color: #999;
-        font-size: .8rem;
-      }
-      li:hover {
-        color: #CC9933;
-        cursor: pointer;
-      }
-    }
-    .article-brief {
-      margin: 15px 0;
-      padding: 3px 12px;
-      background-color: #ddd;
-      font-size: .9rem;
-      p {
-        line-height: 1.5rem;
-      }
-    }
-    footer {
+  }
+  .article-base-info {
+    .el-col:last-child {
       text-align: right;
-      font-size: .6rem;
-      margin-bottom: 10px;
-      .create-time {
-        margin-right: 10px;
-      }
+    }
+    li {
+      display: inline-block;
+      margin-right: 20px;
+      color: #999;
+      font-size: 0.8rem;
+    }
+    li:hover {
+      color: #cc9933;
+      cursor: pointer;
     }
   }
-  .reviewer-info {
-    max-width: 850px;
-    margin: 0 auto;
-    text-align: left;
-    .el-input {
-      width: 200px;
+  .article-brief {
+    margin: 15px 0;
+    padding: 3px 12px;
+    background-color: #ddd;
+    font-size: 0.9rem;
+    p {
+      line-height: 1.5rem;
     }
   }
-  .add-commnet-module {
-    max-width: 850px;
-    margin: 0 auto;
-    text-align: left;
+  footer {
+    text-align: right;
+    font-size: 0.6rem;
+    margin-bottom: 10px;
+    .create-time {
+      margin-right: 10px;
+    }
   }
+}
+.reviewer-info {
+  max-width: 850px;
+  margin: 0 auto;
+  text-align: left;
+  .el-input {
+    width: 200px;
+  }
+}
+.add-commnet-module {
+  max-width: 850px;
+  margin: 0 auto;
+  text-align: left;
+}
 </style>

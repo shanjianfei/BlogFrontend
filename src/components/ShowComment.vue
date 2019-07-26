@@ -123,7 +123,6 @@ export default {
   @import '~@/style/base';
   .show-comment-module {
     .margin(15px, auto);
-    max-width: 850px;
     text-align: left;
     .comment-container {
       .fontS(.85rem);

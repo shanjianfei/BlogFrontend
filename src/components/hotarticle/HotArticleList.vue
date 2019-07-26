@@ -1,58 +1,53 @@
 <template>
-  <div class="hot-article-list" v-if="articles.length>0">
-    <subnav-section-title :title="title" style="padding: 0 15px"></subnav-section-title>
+  <div class="hot-article-list"
+       v-if="hotArticles.length>0">
+    <subnav-section-title :title="title"
+                          style="padding: 0 15px"></subnav-section-title>
     <div class="hot-article-list-content">
-      <hot-article-list-cell v-for="(item, index) in articles" :key="index" :article="item"></hot-article-list-cell>
+      <hot-article-list-cell v-for="(item, index) in hotArticles"
+                             :key="index"
+                             :article="item"></hot-article-list-cell>
     </div>
   </div>
 </template>
 <script>
-import {getArticleList} from '@/api/api'
+import { getArticles } from '@/api/api'
 import HotArticleListCell from '@/components/hotarticle/children/HotArticleListCell'
 import SubnavSectionTitle from '@/components/SubnavSectionTitle'
 
 export default {
   name: 'HotArticleList',
-  props: {
-      articles: {
-          type: Array,
-          default: []
-      }
-  },
   data: function () {
     return {
       page: 1,
       size: 6,
-      title: '热门'
+      title: '热门',
+      hotArticles: []
     }
   },
-  components: {HotArticleListCell, SubnavSectionTitle},
-  methods: {
-    getHotArticle () {
-      let params = {
-        ordering: '-click',
-        page: this.page,
-        size: this.size
-      }
-      let self = this
-      getArticleList(params).then(function (data) {
-        self.articles = data.results
-      })
-    }
-  },
+  components: { HotArticleListCell, SubnavSectionTitle },
   created: function () {
-    this.getHotArticle()
+    let params = {
+      ordering: '-click',
+      page: this.page,
+      size: this.size
+    }
+    let self = this
+    getArticles(params).then(function (data) {
+      self.hotArticles = data.results
+    })
   }
 }
 </script>
 
 <style scoped lang="less">
-  @import '~@/style/mixin.less';
-  @import '~@/style/base.less';
-  .hot-article-list {
-    border-left: 1px solid @border-3;
-    &-content {
-      .padding(0, 15px);
-    }
+@import "~@/style/mixin.less";
+@import "~@/style/base.less";
+.hot-article-list {
+  border-left: 1px solid @border-3;
+  .bgc(@base-white);
+  &-content {
+    .padding(15px, 15px, 0);
   }
+}
 </style>

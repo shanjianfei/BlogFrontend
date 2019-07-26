@@ -1,10 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '@/page/index/Index'
-import HomeContent from '@/components/home/HomeContent'
-import ArticleDetail from '@/page/article/ArticleDetail'
+import HomeContent from '@/page/home/HomeContent'
+import ArticleDetailContent from '@/page/articledetail/ArticleDetailContent'
 import TimeLine from '@/page/timeline/TimeLine'
-import Articles from '@/page/articlelist/ArticleList'
 
 import Article from '@/components/article/Article'
 
@@ -40,10 +39,10 @@ export default new Router({
         },
         {
           path: 'article/:id',
-          name: 'ArticleDetail',
+          name: 'ArticleDetailContent',
           components: {
             header: Header,
-            main: ArticleDetail,
+            main: ArticleDetailContent,
             footer: Footer
           }
         },
@@ -53,15 +52,6 @@ export default new Router({
           components: {
             header: Header,
             main: TimeLine,
-            footer: Footer
-          }
-        },
-        {
-          path: 'articles',
-          name: 'Articles',
-          components: {
-            header: Header,
-            main: Articles,
             footer: Footer
           }
         }

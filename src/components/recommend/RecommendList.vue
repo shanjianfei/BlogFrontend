@@ -1,13 +1,17 @@
 <template>
-  <div class="recommend-list"  v-if="articles.length>0">
-    <subnav-section-title :title="title" style="padding: 0 15px"></subnav-section-title>
+  <div class="recommend-list"
+       v-if="recommendArticles.length > 0">
+    <subnav-section-title :title="title"
+                          style="padding: 0 15px"></subnav-section-title>
     <div class="recommend-list-content">
-      <recommend-list-cell v-for="(item, index) in articles" :article="item" :key="index"></recommend-list-cell>
+      <recommend-list-cell v-for="(item, index) in recommendArticles"
+                           :article="item"
+                           :key="index"></recommend-list-cell>
     </div>
   </div>
 </template>
 <script>
-import {getArticleList} from '@/api/api'
+import { getArticles } from '@/api/api'
 import RecommendListCell from './children/RecommendListCell'
 import SubnavSectionTitle from '@/components/SubnavSectionTitle'
 
@@ -17,33 +21,34 @@ export default {
     return {
       page: 1,
       size: 6,
-      articles: [],
-      title: '推荐'
+      title: '推荐',
+      recommendArticles: []
     }
   },
-  components: {RecommendListCell, SubnavSectionTitle},
+
+  components: { RecommendListCell, SubnavSectionTitle },
   created: function () {
     let self = this
     let params = {
-      isrecommend: 2,
+      isrecommend: true,
       page: this.page,
       size: this.size
     }
-    getArticleList(params)
-      .then(function (data) {
-        self.articles = data['results']
-      })
+    getArticles(params).then(function (data) {
+      self.recommendArticles = data.results
+    })
   }
 }
 </script>
 
 <style scoped lang="less">
-  @import '~@/style/mixin.less';
-  @import '~@/style/base.less';
-  .recommend-list {
-    border-left: 1px solid @border-3;
-    &-content {
-      .padding(0, 15px);
-    }
+@import "~@/style/mixin.less";
+@import "~@/style/base.less";
+.recommend-list {
+  border-left: 1px solid @border-3;
+  .bgc(@base-white);
+  &-content {
+    .padding(15px, 15px, 0);
   }
+}
 </style>
