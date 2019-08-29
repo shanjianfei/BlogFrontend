@@ -11,6 +11,7 @@ import Header from '@/components/Head'
 import Footer from '@/components/Footer'
 
 import RSS from '@/page/rss/Rss'
+import Login from '@/page/login/Login'
 
 Vue.use(Router)
 
@@ -31,6 +32,7 @@ export default new Router({
         },
         {
           path: 'article',
+          name: 'Article',
           components: {
             header: Header,
             main: Article,
@@ -60,6 +62,11 @@ export default new Router({
     {
       path: '/rss',
       component: RSS
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
     }
   ]
 })

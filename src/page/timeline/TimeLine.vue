@@ -1,21 +1,42 @@
 <template>
   <div class="main loading-text timeline-page">
     <el-row>
-      <el-col :xs="24" :sm="24" :md="24" :lg="16">
-        <div class="timeline-content" >
-          <timeline-head
-            @change="handleChange"
-            @lasted="getLastedArticle"
-            @hot="getHotArticle"
-            @default="getArticle"></timeline-head>
+      <el-col :xs="24"
+              :sm="24"
+              :md="24"
+              :lg="16">
+        <div class="timeline-content">
+          <timeline-head @change="handleChange"
+                         @lasted="getLastedBlogs"
+                         @hot="getHotBlogs"
+                         @default="getBlogs"></timeline-head>
           <el-timeline>
-            <timeline-item v-for="(item, index) in articles" :article="item" :key="index"></timeline-item>
+            <timeline-item v-for="(item, index) in articles"
+                           :article="item"
+                           :key="index"></timeline-item>
           </el-timeline>
-          <show-more-button @loadMore="loadMoreArticles" :status="showMore"></show-more-button>
+          <show-more-button @loadMore="loadMoreArticles"
+                            :status="showMore"></show-more-button>
         </div>
+        <el-timeline>
+          <el-timeline-item v-for="(item, index) in blogs"
+                            :timestamp="item.create_time | formatDate"
+                            placement="top"
+                            :key="index">
+            <el-card>
+              <h4>更新 Github 模板</h4>
+              <p>王小虎 提交于 2018/4/12 20:46</p>
+            </el-card>
+          </el-timeline-item>
+        </el-timeline>
         <tips-no-data v-if="articles.length === 0"></tips-no-data>
       </el-col>
-      <el-col class="hidden-md-and-down" :xs="0" :sm="0" :md="0" :lg="8" style="display: block">
+      <el-col class="hidden-md-and-down"
+              :xs="0"
+              :sm="0"
+              :md="0"
+              :lg="8"
+              style="display: block">
         <recommend style="margin-bottom: 20px"></recommend>
         <hot-article style="margin-bottom: 20px"></hot-article>
         <tag-list style="margin-bottom: 20px"></tag-list>
@@ -31,18 +52,19 @@ import TagList from '@/components/tagwall/TagList'
 import Recommend from '@/components/recommend/RecommendList'
 import HotArticle from '@/components/hotarticle/HotArticleList'
 import TimelineHead from './children/TimelineHead'
-import {getDurationArticle} from '@/api/api'
-import {util} from '@/config/mixin'
+import { getDurationArticle, getBlogs } from '@/api/api'
+import { util } from '@/config/mixin'
 import TimelineItem from './children/TimelineItem'
 
-import {mapState, mapActions} from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   name: 'TimeLine',
   data () {
     return {
       page: 1,
-      size: 6
+      size: 6,
+      blogs: []
     }
   },
   computed: mapState('timeline', [
@@ -52,14 +74,17 @@ export default {
     'selected',
     'showMore'
   ]),
-  components: {TipsNoData, ShowMoreButton, TagList, Recommend, HotArticle, TimelineHead, TimelineItem},
+  components: { TipsNoData, ShowMoreButton, TagList, Recommend, HotArticle, TimelineHead, TimelineItem },
   mixins: [util],
   created: function () {
-    this.getArticle()
+    let self = this
+    getBlogs().then(function (data) {
+      self.blogs = data
+    })
   },
   methods: {
     ...mapActions('timeline', ['getTimelineInfo', 'updateSelect']),
-    getArticle () {
+    getBlogs () {
       let params = {
         page: this.page,
         size: this.size
@@ -110,20 +135,20 @@ export default {
       } else if (this.selected === 'lasted') {
         params.ordering = '-update_time'
       }
-      this.getTimelineInfo({params})
+      this.getTimelineInfo({ params })
     }
   }
 }
 </script>
 <style scoped lang="less">
-  @import '~@/style/mixin';
-  @import '~@/style/base';
-  .timeline-page {
-    .padding(0, 10px);
-    .timeline-content {
-      .el-timeline {
-        .margin(top, 20px);
-      }
+@import "~@/style/mixin";
+@import "~@/style/base";
+.timeline-page {
+  .padding(0, 10px);
+  .timeline-content {
+    .el-timeline {
+      .margin(top, 20px);
     }
   }
+}
 </style>

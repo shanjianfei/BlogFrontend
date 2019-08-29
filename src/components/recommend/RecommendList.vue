@@ -6,7 +6,8 @@
     <div class="recommend-list-content">
       <recommend-list-cell v-for="(item, index) in recommendArticles"
                            :article="item"
-                           :key="index"></recommend-list-cell>
+                           :key="index"
+                           :extra="index===0?true:false"></recommend-list-cell>
     </div>
   </div>
 </template>

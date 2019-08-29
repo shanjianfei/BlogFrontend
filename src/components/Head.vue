@@ -30,10 +30,6 @@
                        text-color="#fff"
                        active-text-color="#ffd04b"
                        @select="handleSelect">
-                <!-- <el-submenu index="article" v-if="articleCategory.length">
-                  <template slot="title">文章</template>
-                  <el-menu-item v-for="(item, i) in articleCategory" :key="i" :index="item.category">{{item.category}}</el-menu-item>
-                </el-submenu> -->
                 <el-submenu :index="item.index"
                             v-for="(item, index) in category"
                             :key="index"
@@ -178,7 +174,7 @@ export default {
       if (indexPath.length === 2) {
         this.$router.push({ path: '/article', query: { category: index } })
       } else if (index === 'timeline') {
-        this.$router.push({ path: '/timeline' })
+        this.$router.push({ path: 'timeline' })
       } else if (index === 'about') {
         this.$router.push({ path: '/article', query: { category: 'about' } })
       } else if (index === 'rss') {

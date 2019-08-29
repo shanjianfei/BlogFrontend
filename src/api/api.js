@@ -6,6 +6,9 @@ export const getTags = () => async('/tag/')
 // 获取总分类
 export const getCategory = () => async('/categorylevel/')
 
+// 获取blog
+export const getBlogs = () => async('/blog/')
+
 // 获取文章列表
 export const getArticles = params => async('/article/', 'GET', params)
 

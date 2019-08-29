@@ -1,6 +1,10 @@
 <template>
-  <div class="article-detail-content">
-    <div class="loading-text">
+  <el-row class="article-detail-content">
+    <el-col class="left"
+            :xs="24"
+            :sm="24"
+            :md="24"
+            :lg="16">
       <div class="article-detail-container">
         <header class="article-title">
           {{article.title}}
@@ -76,18 +80,27 @@
         <show-comment :articleId="articleId"
                       ref="showComment"></show-comment>
       </div>
-    </div>
-  </div>
+    </el-col>
+    <el-col class="hidden-sm-and-down right"
+            :xs="0"
+            :sm="0"
+            :md="0"
+            :lg="8"
+            style="display: block; padding-left: 20px">
+      <recommend-list style="margin-bottom: 20px"></recommend-list>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
 import AddComment from '@/components/AddComment'
 import ShowComment from '@/components/ShowComment'
+import RecommendList from '@/components/recommend/RecommendList'
 import { getArticleDetail, articleLike, getComments } from '@/api/api'
 import Vue from 'vue'
 export default {
   name: 'ArticleDetailContent',
-  components: { AddComment, ShowComment },
+  components: { AddComment, ShowComment, RecommendList },
   data () {
     return {
       articleId: '',

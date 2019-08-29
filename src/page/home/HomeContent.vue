@@ -8,7 +8,9 @@
       <section-title :titleZh="article.titleZh"
                      :titleEn="article.titleEn"
                      :menus="article.menus"
-                     @handleSelectMenu="handleSelectMenu"></section-title>
+                     :viewMore="article.viewMore"
+                     @handleSelectMenu="handleSelectMenu"
+                     @refresh="refreshArticle"></section-title>
       <article-brief-list-cell :article="article"
                                v-for="(article, index) in articles"
                                :key="index"></article-brief-list-cell>
@@ -42,20 +44,24 @@ export default {
       article: {
         titleZh: '文章',
         titleEn: 'Article',
-        menus: [
-          {
+        viewMore: {
+          routeName: 'Article',
+          text: '查看更多'
+        },
+        menus: {
+          latest: {
             name: 'latest',
             subMenu: '最新',
             selected: false,
             method: 'latest'
           },
-          {
+          hot: {
             name: 'hot',
             subMenu: '最热',
             selected: false,
             method: 'hot'
           }
-        ]
+        }
       }
     }
   },
@@ -77,19 +83,44 @@ export default {
   },
   methods: {
     ...mapActions('articleList', ['getArticleList', 'showLoading']),
-    latest: function () { },
-    hot: function () { },
-    handleSelectMenu (method) {
-      switch (method) {
+    latest: function () {
+      let params = {
+        ordering: '-update_time',
+        page: 1,
+        size: 6
+      }
+      this.getArticleList({ params, reset: true })
+    },
+    hot: function () {
+      let params = {
+        ordering: '-click',
+        page: 1,
+        size: 6
+      }
+      this.getArticleList({ params, reset: true })
+    },
+    handleSelectMenu (name) {
+      for (let m in this.article.menus) {
+        if (m !== name) {
+          this.article.menus[m].selected = false
+        } else {
+          this.article.menus[m].selected = true
+        }
+      }
+      switch (name) {
         case 'latest':
-          this.ordering = '-update_time'
+          this.latest()
           break
         case 'hot':
-          this.ordering = '-click'
+          this.hot()
           break
       }
+    },
+    refreshArticle () {
+      for (let m in this.article.menus) {
+        this.article.menus[m].selected = false
+      }
       let params = {
-        ordering: this.ordering,
         page: 1,
         size: 6
       }
