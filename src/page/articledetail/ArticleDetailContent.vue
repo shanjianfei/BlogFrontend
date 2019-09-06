@@ -1,5 +1,5 @@
 <template>
-  <el-row class="article-detail-content">
+  <el-row class="article-detail-content" v-if="article">
     <el-col class="left"
             :xs="24"
             :sm="24"
@@ -74,9 +74,11 @@
         </footer>
       </div>
       <div class="comment-container">
-        <add-comment :articleId="articleId"
-                     :commentEnable="!article.comment_enable"
-                     v-on:add-comment="refreshComment"></add-comment>
+        <!-- <keep-alive> -->
+          <add-comment :articleId="articleId"
+                      :commentEnable="!article.comment_enable"
+                      v-on:add-comment="refreshComment"></add-comment>
+        <!-- </keep-alive> -->
         <show-comment :articleId="articleId"
                       ref="showComment"></show-comment>
       </div>
@@ -97,6 +99,7 @@ import AddComment from '@/components/AddComment'
 import ShowComment from '@/components/ShowComment'
 import RecommendList from '@/components/recommend/RecommendList'
 import { getArticleDetail, articleLike, getComments } from '@/api/api'
+import { validPassword } from '@/config/mixin'
 import Vue from 'vue'
 export default {
   name: 'ArticleDetailContent',
@@ -105,18 +108,7 @@ export default {
     return {
       articleId: '',
       comments: [],
-      article: {
-        author: '',
-        click: 0,
-        content: ',',
-        create_time: '',
-        like: 0,
-        tags: [],
-        title: '',
-        update_time: '',
-        comment_enable: true,
-        desc: ''
-      }
+      article: undefined
     }
   },
   watch: {
@@ -175,15 +167,20 @@ export default {
       top: 0
     })
     this.articleId = this.$route.params.id
+    let password = this.$route.query.password
     let self = this
-    getArticleDetail(this.articleId)
+    getArticleDetail(this.articleId, password)
       .then(function (data) {
-        self.article = data
+        if ('result' in data && data['result'] === 'fail') {
+          validPassword.call(self, self.articleId, password)
+        } else {
+          self.getComments()
+          self.article = data
+        }
       })
       .catch(function (error) {
         console.log(error)
       })
-    this.getComments()
   }
 }
 </script>

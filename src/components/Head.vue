@@ -209,13 +209,14 @@ export default {
 @import "~@/style/mixin";
 @import "~@/style/base";
 #header {
+  .h(60px);
   .span {
     .fontSC(0.85rem, @base-white);
   }
   img {
-    .wh(50px, 50px);
+    .wh(45px, 45px);
     .borderRadius(50%);
-    .padding(5px, 0);
+    // .padding(5px, 0);
     vertical-align: middle;
   }
   .el-icon-picture-outline {
@@ -223,7 +224,10 @@ export default {
   }
   .header-hor {
     display: block;
+    .h100();
     .full-hd {
+      .h100();
+
       .bgc(#2c3e50);
 
       .el-col {
@@ -238,7 +242,16 @@ export default {
       }
 
       .logo-container {
+        display: flex;
+        align-items: center;
+        a {
+          .margin(left, 25px);
+          .h(45px);
+          .displayI;
+        }
         span {
+          .margin(left, 15px);
+          .displayI;
           .span;
         }
       }

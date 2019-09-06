@@ -1,7 +1,34 @@
 import axios from 'axios'
-import {baseUrl} from '@/config/env'
+import { baseUrl } from '@/config/env'
+import router from '../router'
 
 axios.defaults.baseURL = baseUrl
+
+axios.interceptors.request.use(
+  config => {
+    if (localStorage.currentUser_token) {
+      axios.defaults.headers.common['Authorization'] =
+        'Token ' + localStorage.currentUser_token
+    }
+    return config
+  },
+  error => {
+    return Promise.reject(error)
+  }
+)
+
+axios.interceptors.response.use(
+  response => {
+    return Promise.resolve(response)
+  },
+  error => {
+    if (error.response.status === 401) {
+      router.push({ path: '/login' })
+      return Promise.reject(error.response)
+    }
+    return Promise.reject(error)
+  }
+)
 
 const async = (url, method = 'GET', data) => {
   method = method.toUpperCase()
@@ -14,8 +41,9 @@ const async = (url, method = 'GET', data) => {
       url = url.slice(0, -1)
     }
     return new Promise((resolve, reject) => {
-      axios.get(url)
-        .then((response) => {
+      axios
+        .get(url)
+        .then(response => {
           // loading.close()
           resolve(response.data)
         })
@@ -26,7 +54,8 @@ const async = (url, method = 'GET', data) => {
     })
   } else if (method === 'POST') {
     return new Promise((resolve, reject) => {
-      axios.post(url, data)
+      axios
+        .post(url, data)
         .then(response => {
           resolve(response.data)
         })
@@ -37,7 +66,8 @@ const async = (url, method = 'GET', data) => {
     })
   } else if (method === 'PUT') {
     return new Promise((resolve, reject) => {
-      axios.put(url, data)
+      axios
+        .put(url, data)
         .then(response => {
           // loading.close()
           resolve(response.data)

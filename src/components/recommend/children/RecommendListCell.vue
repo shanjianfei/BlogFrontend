@@ -1,47 +1,49 @@
 <template>
   <div class="recommend-list-cell">
     <div class="article-title">
-      <el-link :underline="false"
-               @click="$router.push({path: 'article/' + article.id})"
-               style="color: #303133; font-size: 18px">
-        {{article.title}}
+      <el-link
+        :underline="false"
+        @click="$router.push({ path: 'article/' + article.id })"
+        style="color: #303133; font-size: 18px"
+      >
+        {{ article.title }}
       </el-link>
     </div>
-    <div class="extra-contont"
-         v-if="extra">
+    <div class="extra-contont" v-if="extra">
       <ul>
-        <li v-for="(item, index) in article.tags"
-            :key="index">
-          <el-tag size="mini"
-                  :style="{'color': item.color, 'border': '1px solid ' + item.color}">
-            {{item.label}}
+        <li v-for="(item, index) in article.tags" :key="index">
+          <el-tag
+            size="mini"
+            :style="{ color: item.color, border: '1px solid ' + item.color }"
+          >
+            {{ item.label }}
           </el-tag>
         </li>
       </ul>
-      <div class="article-content">
+      <div class="article-desc">
         <p>
-          {{article.desc}}
+          {{ article.desc }}
         </p>
       </div>
     </div>
     <div class="article-base-info">
       <ul class="article-base-info-left">
         <li>
-          {{article.update_time | formatDate('yyyy-mm-dd')}}
+          {{ article.update_time | formatDate("yyyy-mm-dd") }}
         </li>
       </ul>
       <ul class="article-base-info-right">
         <li>
           <i class="el-icon-view"></i>
-          <span>{{article.click}}</span>
+          <span>{{ article.click }}</span>
         </li>
         <li>
           <i class="el-icon-chat-line-square"></i>
-          <span>{{article.comment_count}}</span>
+          <span>{{ article.comment_count }}</span>
         </li>
         <li>
           <i class="el-icon-star-off"></i>
-          <span>{{article.like}}</span>
+          <span>{{ article.like }}</span>
         </li>
       </ul>
     </div>
@@ -82,6 +84,15 @@ export default {
   }
   .extra-contont {
     .margin(top, 15px);
+    li {
+      .displayI;
+      .margin(right, 5px);
+    }
+    .article-desc {
+      p {
+        .fontC(@common-word);
+      }
+    }
   }
   .article-base-info {
     .margin(top, 15px);

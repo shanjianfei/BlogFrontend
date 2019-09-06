@@ -1,5 +1,14 @@
 import async from '@/config/async'
 
+// 注册
+export const register = params => async('/register/', 'POST', params)
+
+// 登录
+export const login = params => async('/login/', 'POST', params)
+
+// 获取博客er信息
+export const getBloggerInfo = () => async('/bloggerinfo/')
+
 // 获取所有标签
 export const getTags = () => async('/tag/')
 
@@ -9,11 +18,14 @@ export const getCategory = () => async('/categorylevel/')
 // 获取blog
 export const getBlogs = () => async('/blog/')
 
+// 验证博客
+export const verifyBlogPassword = (blog_id, password) => async('/verifyblogpassword/', 'POST', {blog_id, password})
+
 // 获取文章列表
 export const getArticles = params => async('/article/', 'GET', params)
 
 // 获取文章详情
-export const getArticleDetail = id => async('/article/' + id + '/')
+export const getArticleDetail = (id, psd) => async('/article/' + id + '/?password=' + psd)
 
 // 文章点赞
 export const articleLike = id =>
@@ -39,9 +51,6 @@ export const getRss = () => async('/rss/')
 
 export const getArticleCategory = () => async('/category/')
 
-export const getBloggerInfo = () => async('/bloggerinfo/')
-
-//
 // 根据条件获取文章列表
 export const getArticleList = params => async('/articlelist/', 'GET', params)
 

@@ -66,8 +66,12 @@ export default {
                 })
               self.$emit('add-comment')
               self.resetForm(commnetForm)
-            }).catch(function () {
-              self.$message.error('评论失败')
+            }).catch(function (error) {
+              if (error.status === 401) {
+                self.$message.error('登录后评论')
+              } else {
+                self.$message.error('评论失败')
+              }
             })
         } else {
           self.$message.error('评论失败')

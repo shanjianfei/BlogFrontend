@@ -1,26 +1,29 @@
 <template>
   <el-row class="home-content">
-    <el-col class="left"
-            :xs="24"
-            :sm="24"
-            :md="24"
-            :lg="16">
-      <section-title :titleZh="article.titleZh"
-                     :titleEn="article.titleEn"
-                     :menus="article.menus"
-                     :viewMore="article.viewMore"
-                     @handleSelectMenu="handleSelectMenu"
-                     @refresh="refreshArticle"></section-title>
-      <article-brief-list-cell :article="article"
-                               v-for="(article, index) in articles"
-                               :key="index"></article-brief-list-cell>
+    <el-col class="left" :xs="24" :sm="24" :md="24" :lg="17">
+      <section-title
+        :titleZh="article.titleZh"
+        :titleEn="article.titleEn"
+        :menus="article.menus"
+        :viewMore="article.viewMore"
+        @handleSelectMenu="handleSelectMenu"
+        @refresh="refreshArticle"
+      ></section-title>
+      <article-brief-list-cell
+        :article="article"
+        v-for="(article, index) in articles"
+        :key="index"
+      ></article-brief-list-cell>
     </el-col>
-    <el-col class="hidden-sm-and-down right"
-            :xs="0"
-            :sm="0"
-            :md="0"
-            :lg="8"
-            style="display: block; padding-left: 20px">
+    <el-col
+      class="hidden-sm-and-down right"
+      :xs="0"
+      :sm="0"
+      :md="0"
+      :lg="7"
+      style="display: block; padding-left: 20px"
+    >
+      <blogger-info></blogger-info>
       <recommend-list style="margin-bottom: 20px"></recommend-list>
       <hot-article-list style="margin-bottom: 20px"></hot-article-list>
       <tags style="margin-bottom: 20px"></tags>
@@ -33,6 +36,7 @@ import ArticleBriefListCell from '@/components/ArticleBriefListCell'
 import Tags from '@/components/tagwall/TagList'
 import RecommendList from '@/components/recommend/RecommendList'
 import HotArticleList from '@/components/hotarticle/HotArticleList'
+import BloggerInfo from '@/components/BloggerInfo'
 
 import { mapActions, mapState } from 'vuex'
 
@@ -79,7 +83,8 @@ export default {
     ArticleBriefListCell,
     Tags,
     RecommendList,
-    HotArticleList
+    HotArticleList,
+    BloggerInfo
   },
   methods: {
     ...mapActions('articleList', ['getArticleList', 'showLoading']),

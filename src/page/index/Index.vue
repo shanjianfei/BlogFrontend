@@ -8,19 +8,22 @@
     </main>
     <footer>
       <router-view name="footer"></router-view>
-      <div class="scroll-container"
-           v-show="upIsShow">
+      <div class="scroll-container" v-show="upIsShow">
         <el-row class="up-container">
-          <el-button class="up"
-                     size="small"
-                     icon="el-icon-caret-top"
-                     @click="backTop"></el-button>
+          <el-button
+            class="up"
+            size="small"
+            icon="el-icon-caret-top"
+            @click="backTop"
+          ></el-button>
         </el-row>
         <el-row class="down-container">
-          <el-button class="down"
-                     size="small"
-                     icon="el-icon-caret-bottom"
-                     @click="goDown"></el-button>
+          <el-button
+            class="down"
+            size="small"
+            icon="el-icon-caret-bottom"
+            @click="goDown"
+          ></el-button>
         </el-row>
       </div>
     </footer>
@@ -30,7 +33,6 @@
 <script>
 import { getSiteInfo } from '@/api/api'
 import Top from '@/components/Top'
-import Login from '@/components/Login'
 export default {
   name: 'Index',
   data () {
@@ -39,7 +41,7 @@ export default {
       asideNav: false
     }
   },
-  components: { Top, Login },
+  components: { Top },
   methods: {
     backTop () { // 页面返回到顶部
       window.scrollTo(
@@ -58,11 +60,11 @@ export default {
       )
     },
     getSiteInfo () {
-      // let self = this
+      let self = this
       getSiteInfo()
         .then(function (data) {
           if (data.length) {
-            // self.$store.dispatch('updateSiteInfo', data[0])
+            self.$store.dispatch('updateSiteInfo', data[0])
           }
         })
     }
@@ -87,6 +89,8 @@ export default {
 @import "~@/style/mixin";
 @import "~@/style/base";
 .index {
+  .margin(left, 50px);
+  .margin(right, 50px);
   header {
     .z-index(100);
     .fixedTop;
@@ -115,7 +119,7 @@ export default {
 body {
   @media screen and (min-width: 1200px) {
     main {
-      .w(1200px);
+      .w(1300px);
     }
   }
 }

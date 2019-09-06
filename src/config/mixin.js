@@ -1,4 +1,4 @@
-import {giveLikeToCommnet} from '@/api/api'
+import {giveLikeToCommnet, verifyBlogPassword} from '@/api/api'
 import {imageBaseUrl} from '@/config/env'
 
 export const util = {
@@ -91,4 +91,48 @@ export const commentUtil = {
         })
     }
   }
+}
+
+export function validPassword (articleId) {
+  let self = this
+  let checkPassword = (articleId, password) => {
+    verifyBlogPassword(articleId, password).then(function (data) {
+      if (data.result === 'success') {
+        self.$router.push({ path: 'article/' + articleId + '/?password=' + password })
+      } else {
+        self.$message({
+          type: 'error',
+          message: data.msg
+        })
+      }
+    }).catch(function (error) {
+      let status = error.response.status
+      let data = error.response.data
+      let msg = ''
+      if ('blog_id' in data) {
+        msg = '没有此篇blog'
+      } else if ('password' in data) {
+        msg = '密码错误'
+      } else {
+        msg = '验证失败'
+      }
+      if (status === 400) {
+        self.$message({
+          type: 'error',
+          message: msg
+        })
+      }
+    })
+  }
+  this.$prompt('请输入密码', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消'
+  }).then(({ value }) => {
+    checkPassword(articleId, value)
+  }).catch(() => {
+    self.$message({
+      type: 'info',
+      message: '取消输入'
+    })
+  })
 }
