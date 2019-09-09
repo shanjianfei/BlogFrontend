@@ -25,7 +25,6 @@
         :disabled="loginBtn"
         >登录</el-button
       >
-      {{fromUrl}}
     </el-row>
   </div>
 </template>

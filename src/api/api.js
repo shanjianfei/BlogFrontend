@@ -19,13 +19,15 @@ export const getCategory = () => async('/categorylevel/')
 export const getBlogs = () => async('/blog/')
 
 // 验证博客
-export const verifyBlogPassword = (blog_id, password) => async('/verifyblogpassword/', 'POST', {blog_id, password})
+export const verifyBlogPassword = (blogId, password) =>
+  async('/verifyblogpassword/', 'POST', { blog_id: blogId, password })
 
 // 获取文章列表
 export const getArticles = params => async('/article/', 'GET', params)
 
 // 获取文章详情
-export const getArticleDetail = (id, psd) => async('/article/' + id + '/?password=' + psd)
+export const getArticleDetail = (id, psd) =>
+  async('/article/' + id + '/?password=' + psd)
 
 // 文章点赞
 export const articleLike = id =>
@@ -39,12 +41,14 @@ export const giveLike = articleId =>
 
 // 给评论点赞
 export const giveLikeToCommnet = data => async('/commentlike/', 'POST', data)
-export const getComments = articleId =>
-  async('comment/?article_id=' + articleId)
+export const getComments = blogId => async('/comment/?article_id=' + blogId)
 
 // 添加评论
-export const addComment = data => async('comment/', 'POST', data)
-export const getCommentDetail = commentId => async('comment/' + commentId + '/')
+export const addComment = data => async('/comment/', 'POST', data)
+
+// 获取评论详细信息
+export const getCommentDetail = commentId =>
+  async('/comment/' + commentId + '/')
 export const getSiteInfo = () => async('/siteinfo/')
 
 export const getRss = () => async('/rss/')

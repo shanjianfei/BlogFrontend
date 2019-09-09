@@ -67,7 +67,6 @@
 import LinkShowMore from '@/components/LinkShowMore'
 import { getImageUrl } from '@/config/util'
 import { util, validPassword } from '@/config/mixin'
-import { verifyBlogPassword } from '@/api/api'
 
 export default {
   name: 'Article',
@@ -87,7 +86,7 @@ export default {
     },
     goDetailArticle (articleId, isEncrypt) {
       if (isEncrypt) {
-        validPassword.call(this, articleId)
+        validPassword.call(this, articleId, 'article')
       }
     }
   },

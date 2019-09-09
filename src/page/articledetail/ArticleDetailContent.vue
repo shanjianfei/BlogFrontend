@@ -1,20 +1,15 @@
 <template>
   <el-row class="article-detail-content" v-if="article">
-    <el-col class="left"
-            :xs="24"
-            :sm="24"
-            :md="24"
-            :lg="16">
+    <el-col class="left" :xs="24" :sm="24" :md="24" :lg="16">
       <div class="article-detail-container">
         <header class="article-title">
-          {{article.title}}
+          {{ article.title }}
         </header>
         <section>
           <div class="article-tag">
             <ul>
-              <li v-for="(item, index) in article.tags"
-                  :key="index">
-                {{item}}
+              <li v-for="(item, index) in article.tags" :key="index">
+                {{ item }}
               </li>
             </ul>
           </div>
@@ -24,12 +19,12 @@
                 <li>
                   <span>作者</span>
                   <span>/</span>
-                  <span>{{article.author}}</span>
+                  <span>{{ article.author }}</span>
                 </li>
                 <li>
                   <span>创建时间</span>
                   <span>/</span>
-                  <span>{{article.create_time | formatDatetime}}</span>
+                  <span>{{ article.create_time | formatDatetime }}</span>
                 </li>
               </ul>
             </el-col>
@@ -37,17 +32,17 @@
               <ul>
                 <li>
                   <i class="el-icon-view"></i>
-                  <span>{{article.click}}</span>
+                  <span>{{ article.click }}</span>
                   <span>点击</span>
                 </li>
                 <li @click="returnComments">
                   <i class="el-icon-chat-line-square"></i>
-                  <span>{{comments.length}}</span>
+                  <span>{{ comments.length }}</span>
                   <span>评论</span>
                 </li>
                 <li @click="like">
                   <i class="el-icon-star-on"></i>
-                  <span>{{article.like}}</span>
+                  <span>{{ article.like }}</span>
                   <span>点赞</span>
                 </li>
               </ul>
@@ -59,36 +54,38 @@
               {{ article.brief_introduction }}
             </p>
           </div>
-          <div class="article-content"
-               v-html="article.content"></div>
+          <div class="article-content" v-html="article.content"></div>
         </section>
         <footer>
           <span class="create-time">
             <span>文章创建于</span>
-            <span>{{article.create_time | formatDatetime}}</span>
+            <span>{{ article.create_time | formatDatetime }}</span>
           </span>
           <span class="update-time">
             <span>更新于</span>
-            <span>{{article.update_time | formatDatetime}}</span>
+            <span>{{ article.update_time | formatDatetime }}</span>
           </span>
         </footer>
       </div>
       <div class="comment-container">
         <!-- <keep-alive> -->
-          <add-comment :articleId="articleId"
-                      :commentEnable="!article.comment_enable"
-                      v-on:add-comment="refreshComment"></add-comment>
+        <add-comment
+          :articleId="articleId"
+          :commentEnable="!article.comment_enable"
+          v-on:add-comment="refreshComment"
+        ></add-comment>
         <!-- </keep-alive> -->
-        <show-comment :articleId="articleId"
-                      ref="showComment"></show-comment>
+        <show-comment :articleId="articleId" ref="showComment"></show-comment>
       </div>
     </el-col>
-    <el-col class="hidden-sm-and-down right"
-            :xs="0"
-            :sm="0"
-            :md="0"
-            :lg="8"
-            style="display: block; padding-left: 20px">
+    <el-col
+      class="hidden-sm-and-down right"
+      :xs="0"
+      :sm="0"
+      :md="0"
+      :lg="8"
+      style="display: block; padding-left: 20px"
+    >
       <recommend-list style="margin-bottom: 20px"></recommend-list>
     </el-col>
   </el-row>
@@ -113,15 +110,7 @@ export default {
   },
   watch: {
     '$route': function (to, from) {
-      let self = this
-      let articleId = to.params.id
-      getArticleDetail(articleId)
-        .then(function (data) {
-          self.article = data
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
+      this.getArticleContent()
     }
   },
   methods: {
@@ -155,6 +144,23 @@ export default {
       if (eleCom) {
         eleCom.scrollIntoView({ block: 'start', inline: 'nearest', behavior: 'smooth' })
       }
+    },
+    getArticleContent () {
+      this.articleId = this.$route.params.id
+      let password = this.$route.query.password
+      let self = this
+      getArticleDetail(this.articleId, password)
+        .then(function (data) {
+          if ('result' in data && data['result'] === 'fail') {
+            validPassword.call(self, self.articleId, 'article')
+          } else {
+            self.getComments()
+            self.article = data
+          }
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
     }
   },
   filters: {
@@ -166,21 +172,7 @@ export default {
     window.scrollTo({
       top: 0
     })
-    this.articleId = this.$route.params.id
-    let password = this.$route.query.password
-    let self = this
-    getArticleDetail(this.articleId, password)
-      .then(function (data) {
-        if ('result' in data && data['result'] === 'fail') {
-          validPassword.call(self, self.articleId, password)
-        } else {
-          self.getComments()
-          self.article = data
-        }
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
+    this.getArticleContent()
   }
 }
 </script>

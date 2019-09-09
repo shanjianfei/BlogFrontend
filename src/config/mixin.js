@@ -93,12 +93,12 @@ export const commentUtil = {
   }
 }
 
-export function validPassword (articleId) {
+export function validPassword (blogId, blogType) {
   let self = this
-  let checkPassword = (articleId, password) => {
-    verifyBlogPassword(articleId, password).then(function (data) {
+  let checkPassword = (blogId, password) => {
+    verifyBlogPassword(blogId, password).then(function (data) {
       if (data.result === 'success') {
-        self.$router.push({ path: 'article/' + articleId + '/?password=' + password })
+        self.$router.push({ path: '/' + blogType + '/' + blogId + '/?password=' + password })
       } else {
         self.$message({
           type: 'error',
@@ -128,7 +128,7 @@ export function validPassword (articleId) {
     confirmButtonText: '确定',
     cancelButtonText: '取消'
   }).then(({ value }) => {
-    checkPassword(articleId, value)
+    checkPassword(blogId, value)
   }).catch(() => {
     self.$message({
       type: 'info',

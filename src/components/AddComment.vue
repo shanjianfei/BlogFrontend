@@ -32,6 +32,7 @@
 </template>
 <script>
 import { addComment } from '@/api/api'
+import {mapMutations} from 'vuex'
 
 export default {
   props: ['articleId', 'commentEnable'],
@@ -49,6 +50,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['updateComments']),
     submitForm (commnetForm) {
       let self = this
       this.$refs[commnetForm].validate((valid) => {
@@ -65,6 +67,7 @@ export default {
                   type: 'success'
                 })
               self.$emit('add-comment')
+              self.updateComments(data)
               self.resetForm(commnetForm)
             }).catch(function (error) {
               if (error.status === 401) {

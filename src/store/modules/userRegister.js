@@ -12,16 +12,19 @@ const state = {
 }
 
 const mutations = {
-  setUser (state, { userName, token }) {
-    localStorage.setItem('currentUser_name', userName)
-    localStorage.setItem('currentUser_token', token)
-  }
 }
 
 const actions = {
   userRegister ({ commit }, { username, password, self }) {
     register({ username, password }).then(function (response) {
-      self.$message.success('注册成功')
+      self.$message.success(response.msg)
+    }).catch(function (error) {
+      let status = error.response.status
+      if (status === 409) {
+        let msg = error.response.data.msg
+        self.$message.error(msg)
+      }
+    }).finally(() => {
       self.loginBtn = false
       self.registerBtn = false
     })

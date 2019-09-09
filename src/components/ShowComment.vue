@@ -3,34 +3,45 @@
     <el-divider><i class="el-icon-chat-dot-square"></i></el-divider>
     <div v-if="comments.length" class="comment-container">
       <div class="comment-label">
-      <span>
-        最新评论
-      </span>
+        <span>
+          最新评论
+        </span>
       </div>
-      <comment-list-cell  v-for="(comment, index) in comments" :key="index" :comment="comment" :articleId=articleId></comment-list-cell>
+      <comment-list-cell
+        v-for="(comment, index) in comments"
+        :key="index"
+        :comment="comment"
+        :articleId="articleId"
+      ></comment-list-cell>
     </div>
     <div v-else class="tips-no-comment">暂无评论</div>
   </div>
 </template>
 <script>
-import {getComments, addComment, getCommentDetail, giveLikeToCommnet} from '@/api/api'
+import { getComments, addComment, getCommentDetail, giveLikeToCommnet } from '@/api/api'
 import Vue from 'vue'
 import CommentListCell from '@/components/CommentListCell'
+import { mapState } from 'vuex'
+
 export default {
   name: 'ShowComment',
   props: ['articleId'],
-  components: {CommentListCell},
+  components: { CommentListCell },
   data () {
     return {
       comments: []
     }
+  },
+  computed: {
+    // ...mapState('comment', ['comments'])
   },
   methods: {
     getComments: function (articleId) {
       let self = this
       getComments(articleId)
         .then(function (data) {
-          self.comments = data
+          console.log(data)
+          self.comments = data.results
         })
     },
     getSubComments (commentId) {
@@ -80,7 +91,7 @@ export default {
     giveLike: function (commentId) {
       console.log(commentId)
       let self = this
-      let postData = {'comment_id': commentId, 'like': true}
+      let postData = { 'comment_id': commentId, 'like': true }
       giveLikeToCommnet(postData)
         .then(function (data) {
           for (let i in self.comments) {
@@ -113,43 +124,44 @@ export default {
     }
   },
   mounted: function () {
+    console.log(this.articleId)
     this.getComments(this.articleId)
   }
 }
 </script>
 
 <style scoped lang="less">
-  @import '~@/style/mixin';
-  @import '~@/style/base';
-  .show-comment-module {
-    .margin(15px, auto);
-    text-align: left;
-    .comment-container {
-      .fontS(.85rem);
-      .comment-label {
-        .margin(bottom, 20px);
-        border-left: 5px solid @common-blue;
-        span {
-          .fontC(@common-blue);
-          .margin(left, 15px);
-        }
-      }
-
-      .comment-form {
-        .w100;
-        .margin(top, 30px);
+@import "~@/style/mixin";
+@import "~@/style/base";
+.show-comment-module {
+  .margin(15px, auto);
+  text-align: left;
+  .comment-container {
+    .fontS(0.85rem);
+    .comment-label {
+      .margin(bottom, 20px);
+      border-left: 5px solid @common-blue;
+      span {
+        .fontC(@common-blue);
+        .margin(left, 15px);
       }
     }
-    .tips-no-comment {
+
+    .comment-form {
+      .w100;
       .margin(top, 30px);
-      .fontC(@common-gray);
-    }
-
-    .like-active {
-      .fontSC(.75rem, @common-blue);
-    }
-    .el-link {
-        .fontS(.85rem);
     }
   }
+  .tips-no-comment {
+    .margin(top, 30px);
+    .fontC(@common-gray);
+  }
+
+  .like-active {
+    .fontSC(0.75rem, @common-blue);
+  }
+  .el-link {
+    .fontS(0.85rem);
+  }
+}
 </style>
