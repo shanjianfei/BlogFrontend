@@ -4,7 +4,7 @@
       {{ subComment.content }}
     </el-row>
     <el-row class="sub-comment-bottom">
-      <span class="author">--{{ subComment.author }}</span>
+      <span class="author">--{{ subComment.user.username }}</span>
       <span>·</span>
       <span class="createtime">{{
         subComment.create_time | formatDate("yyyy年MM月dd日")

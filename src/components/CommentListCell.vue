@@ -2,7 +2,7 @@
   <div class="comment-list-cell">
     <div class="comment-content">
       <el-row class="comment-header">
-        <span>{{ comment.author }}</span>
+        <span>{{ comment.user.username }}</span>
         <span>·</span>
         <span>{{ comment.create_time | formatDate("yyyy年MM月dd日") }}</span>
       </el-row>
@@ -21,7 +21,7 @@
     </div>
     <div class="sub-comment-list">
       <sub-comment-list-cell
-        v-for="(subComment, index) in subs"
+        v-for="(subComment, index) in comment.all_sub_comment"
         :key="index"
         :subComment="subComment"
         style="margin-top: 15px;"
@@ -34,23 +34,17 @@
       >
     </div>
     <div class="comment-area">
-      <el-form
-        v-show="show"
-        class="comment-form"
-        ref="commnetForm"
-        :model="postComment"
-        size="mini"
-      >
+      <el-form v-show="show" class="comment-form" ref="commnetForm" size="mini">
         <el-form-item>
           <el-input
             type="textarea"
             rows="1"
             placeholder="填写评论"
-            v-model="postComment.text"
+            v-model="rootInputValue"
           ></el-input>
         </el-form-item>
         <el-form-item class="form-footer">
-          <el-button type="primary" @click="submitComment(comment.id)"
+          <el-button type="primary" @click="addComment(comment.id)"
             >发表评论</el-button
           >
         </el-form-item>
@@ -62,72 +56,40 @@
 
 <script>
 import { util, commentUtil } from '@/config/mixin'
-import { addComment, getCommentDetail } from '@/api/api'
 import SubCommentListCell from '@/components/SubCommentListCell'
+import { mapState, mapActions } from 'vuex'
+
 export default {
   name: 'CommentListCell',
-  props: {
-    comment: {
-      type: Object,
-      default: undefined
-    },
-    articleId: {
-      validator: function (value) {
-        return /^\d+$/.test(value)
-      },
-      default: undefined
-    }
-  },
   components: { SubCommentListCell },
+  props: ['comment'],
   mixins: [util, commentUtil],
   data () {
     return {
       show: false, // 显示评论框
-      postComment: {
-        text: ''
-      },
-      subs: []
+      rootInputValue: ''
     }
   },
+  computed: {
+    ...mapState('commentModule', ['articleId']),
+  },
   methods: {
-    submitComment (commentId) {
-      let self = this
-      if (!this.postComment.text) return
+    ...mapActions('commentModule', ['getComments', 'submitComment', 'postLikeComment']),
+    addComment (commentId) {
+      if (!this.rootInputValue) return
       let postData = {
-        article: self.articleId,
+        article: this.articleId,
         is_root: false,
         author: 'guest',
         super_comment: commentId,
         belong_root: commentId,
-        content: this.postComment.text
+        content: this.rootInputValue
       }
-      addComment(postData)
-        .then(function (data) {
-          self.$message({
-            type: 'success',
-            message: '评论成功'
-          })
-          self.postComment.text = ''
-        })
-        .catch(function (data) {
-          self.$message.error('评论失败')
-        })
+      this.submitComment(postData, this)
     },
-    getSubs () {
-      let self = this
-      console.log(this.comment)
-      if (this.comment) {
-        console.log(1)
-        getCommentDetail(this.comment.id).then(function (response) {
-          console.log(10)
-          console.log(response)
-          self.subs = response.results
-        })
-      }
+    giveLike (commentId) {
+      this.postLikeComment({ commentId, self: this})
     }
-  },
-  created () {
-    this.getSubs()
   }
 }
 </script>

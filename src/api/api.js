@@ -40,8 +40,19 @@ export const giveLike = articleId =>
   })
 
 // 给评论点赞
-export const giveLikeToCommnet = data => async('/commentlike/', 'POST', data)
+export const giveLikeToCommnet = commentId =>
+  async('/commentlike/' + commentId + '/', 'PUT', { like: true })
+
+// 获取评论
 export const getComments = blogId => async('/comment/?article_id=' + blogId)
+
+// 获取根评论
+export const getRootComments = blogId =>
+  async('/comment/?article_id=' + blogId + '&is_root=True')
+
+// 获取子评论
+export const getSubComments = (blogId, commentId) =>
+  async('/comment/?article_id=' + blogId + '&belong_root=' + commentId)
 
 // 添加评论
 export const addComment = data => async('/comment/', 'POST', data)

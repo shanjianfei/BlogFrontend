@@ -5,44 +5,47 @@
         发表评论
       </h4>
     </div>
-    <el-form class="comment-form"
-             :model="commentForm"
-             :rules="rules"
-             ref="commnetForm"
-             :disabled="commentEnable">
-      <el-form-item v-if="!commentEnable"
-                    prop="content">
-        <el-input type="textarea"
-                  rows="5"
-                  v-model="commentForm.content"
-                  maxlength="100"
-                  minlength="1"></el-input>
+    <el-form
+      :model="commentForm"
+      class="comment-form"
+      ref="commnetForm"
+      :rules="rules"
+      :disabled="commentEnable"
+    >
+      <el-form-item prop="rootInputValue" v-if="!commentEnable">
+        <el-input
+          type="textarea"
+          rows="5"
+          v-model="commentForm.rootInputValue"
+          maxlength="100"
+          minlength="1"
+        ></el-input>
       </el-form-item>
-      <div class="disable-comment"
-           v-else>
+      <div class="disable-comment" v-else>
         该文章关闭了评论
       </div>
       <el-form-item class="form-footer">
-        <el-button type="primary"
-                   @click="submitForm('commnetForm')">发表评论</el-button>
+        <el-button type="primary" @click="addComment('commnetForm')"
+          >发表评论</el-button
+        >
         <el-button @click="resetForm('commnetForm')">重置</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 <script>
-import { addComment } from '@/api/api'
-import {mapMutations} from 'vuex'
+// import { addComment } from '@/api/api'
+import { mapActions } from 'vuex'
 
 export default {
   props: ['articleId', 'commentEnable'],
   data () {
     return {
       commentForm: {
-        content: ''
+        rootInputValue: ''
       },
       rules: {
-        content: [
+        rootInputValue: [
           { required: true, message: '请填写评论', trigger: 'blur' },
           { min: 1, max: 100, message: '长度在 1 到 100 个字符', trigger: 'blur' }
         ]
@@ -50,7 +53,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['updateComments']),
+    ...mapActions('commentModule', ['submitComment']),
     submitForm (commnetForm) {
       let self = this
       this.$refs[commnetForm].validate((valid) => {
@@ -78,6 +81,23 @@ export default {
             })
         } else {
           self.$message.error('评论失败')
+        }
+      })
+    },
+    addComment (formName) {
+      let self = this
+      this.$refs[formName].validate((valid) => {
+        if (this.commentForm.rootInputValue) {
+          let postData = {
+            article: self.articleId,
+            is_root: true,
+            author: 'guest',
+            content: this.commentForm.rootInputValue
+          }
+          self.submitComment({ postData, self })
+        } else {
+          console.log('error submit!!')
+          return false
         }
       })
     },

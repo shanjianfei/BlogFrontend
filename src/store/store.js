@@ -4,6 +4,7 @@ import Timeline from './modules/timeline'
 import ArticleList from './modules/articleList'
 import UserModule from './modules/userModule'
 import UserRegister from './modules/userRegister'
+import CommentModule from './modules/commentModule'
 
 Vue.use(Vuex)
 
@@ -36,7 +37,8 @@ const store = new Vuex.Store({
     timeline: Timeline,
     articleList: ArticleList,
     userModule: UserModule,
-    userRegister: UserRegister
+    userRegister: UserRegister,
+    commentModule: CommentModule
   }
 })
 

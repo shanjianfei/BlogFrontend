@@ -1,95 +1,43 @@
 <template>
   <div class="show-comment-module" id="comments">
     <el-divider><i class="el-icon-chat-dot-square"></i></el-divider>
-    <div v-if="comments.length" class="comment-container">
+    <div v-if="rootComments.length" class="comment-container">
       <div class="comment-label">
         <span>
           最新评论
         </span>
       </div>
       <comment-list-cell
-        v-for="(comment, index) in comments"
-        :key="index"
+        v-for="(comment, index) in rootComments"
         :comment="comment"
-        :articleId="articleId"
+        :key="index"
       ></comment-list-cell>
     </div>
     <div v-else class="tips-no-comment">暂无评论</div>
   </div>
 </template>
 <script>
-import { getComments, addComment, getCommentDetail, giveLikeToCommnet } from '@/api/api'
+import { giveLikeToCommnet } from '@/api/api'
 import Vue from 'vue'
 import CommentListCell from '@/components/CommentListCell'
-import { mapState } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 
 export default {
   name: 'ShowComment',
   props: ['articleId'],
   components: { CommentListCell },
-  data () {
-    return {
-      comments: []
-    }
-  },
+  // data () {
+  //   return {
+  //     rootComments: []
+  //   }
+  // },
   computed: {
-    // ...mapState('comment', ['comments'])
+    ...mapState('commentModule', ['rootComments'])
   },
   methods: {
-    getComments: function (articleId) {
-      let self = this
-      getComments(articleId)
-        .then(function (data) {
-          console.log(data)
-          self.comments = data.results
-        })
-    },
-    getSubComments (commentId) {
-      let self = this
-      getCommentDetail(commentId)
-        .then(function (data) {
-          for (let i in self.comments) {
-            if (self.comments[i].id === data.id) {
-              Vue.set(self.comments, i, data)
-              break
-            }
-          }
-        })
-    },
-    showCommentArea (i) {
-      Vue.set(this.comments[i], 'show', true)
-    },
-    submitForm (commentId, index) {
-      console.log(this.$refs[('comment' + index)])
-      let self = this
-      if (!this.commentForm.content) return
-      let postData = {
-        article: self.articleId,
-        is_root: false,
-        author: 'guest',
-        super_comment: commentId,
-        belong_root: commentId,
-        content: this.commentForm.content
-      }
-      addComment(postData)
-        .then(function (data) {
-          self.$message({
-            type: 'success',
-            message: '评论成功'
-          })
-          self.commentForm.content = ''
-          Vue.set(this.comments[index], 'show', false)
-          self.comments[index].subs.push(postData)
-        })
-        .catch(function (data) {
-          self.$message.error('评论失败')
-        })
-    },
-    refresh: function () {
-      this.getComments(this.articleId)
-    },
+    ...mapMutations('commentModule', ['setArticleId']),
+    ...mapActions('commentModule', ['getComments', 'submitComment']),
     giveLike: function (commentId) {
-      console.log(commentId)
       let self = this
       let postData = { 'comment_id': commentId, 'like': true }
       giveLikeToCommnet(postData)
@@ -123,9 +71,9 @@ export default {
       return Vue.formatDate(new Date(value), 'yyyy年MM月dd日')
     }
   },
-  mounted: function () {
-    console.log(this.articleId)
-    this.getComments(this.articleId)
+  created: function () {
+    this.setArticleId(this.articleId)
+    this.getComments()
   }
 }
 </script>
