@@ -169,10 +169,17 @@ export default {
       }
     },
     handleSelect (index, indexPath) {
+      console.log(index, indexPath)
       this.asideNav = false
       document.body.style.overflow = 'auto'
-      if (indexPath.length === 2) {
-        this.$router.push({ path: '/article', query: { category: index } })
+      if (indexPath.length >= 2) {
+        let subPath = ''
+        for (let i in indexPath) {
+          if (i > 0) {
+            subPath += indexPath[i] + '/'
+          }
+        }
+        this.$router.push({ path: `${indexPath[0]}/category/` + subPath })
       } else if (index === 'timeline') {
         this.$router.push({ path: 'timeline' })
       } else if (index === 'about') {

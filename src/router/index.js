@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '@/page/index/Index'
 import HomeContent from '@/page/home/HomeContent'
+import CategoryContent from '@/page/category/CategoryContent'
 import ArticleDetailContent from '@/page/articledetail/ArticleDetailContent'
 import TimeLine from '@/page/timeline/TimeLine'
 
@@ -45,6 +46,24 @@ export default new Router({
           components: {
             header: Header,
             main: ArticleDetailContent,
+            footer: Footer
+          }
+        },
+        {
+          path: 'articles',
+          name: 'Articles',
+          components: {
+            header: Header,
+            main: CategoryContent,
+            footer: Footer
+          }
+        },
+        {
+          path: 'artilce/category/:categorylevel1?/:categorylevel2?/:categorylevel3?',
+          name: 'ArticleListContent',
+          components: {
+            header: Header,
+            main: CategoryContent,
             footer: Footer
           }
         },

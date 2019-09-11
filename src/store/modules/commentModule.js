@@ -19,14 +19,12 @@ const mutations = {
       state.rootComments.unshift(comment)
     } else {
       let belongRoot = comment['belong_root']
-      if (state.rootComments.length > 0) {
-        for (let c in state.rootComments) {
-          if (state.rootComments[c] === belongRoot) {
-            if (!state.rootComments[c].all_sub_comment) {
-              state.rootComments.all_sub_comment = []
-            }
-            state.rootComments.all_sub_comment.unshift(comment)
+      for (let c in state.rootComments) {
+        if (state.rootComments[c]['id'] === belongRoot) {
+          if (!state.rootComments[c].all_sub_comment) {
+            state.rootComments[c].all_sub_comment = []
           }
+          state.rootComments[c].all_sub_comment.unshift(comment)
         }
       }
     }
@@ -49,6 +47,9 @@ const actions = {
         if (response.result === 'success') {
           if (postData.is_root) {
             self.commentForm.rootInputValue = ''
+          } else {
+            self.subInputValue = ''
+            self.show = false
           }
           commit('updateRootComments', response.data)
         }
@@ -60,6 +61,7 @@ const actions = {
   postLikeComment ({ state }, { commentId, self }) {
     giveLikeToCommnet(commentId)
       .then(function (response) {
+        console.log(response)
         if (response.result === 'success') {
           for (let i in state.rootComments) {
             if (state.rootComments[i].id === commentId) {
@@ -67,8 +69,8 @@ const actions = {
               break
             } else {
               for (let j in state.rootComments[i].all_sub_comment) {
-                if (state.rootComments[i].subs[j].id === commentId) {
-                  state.rootComments[i].subs[j].like += 1
+                if (state.rootComments[i].all_sub_comment[j].id === commentId) {
+                  state.rootComments[i].all_sub_comment[j].like += 1
                   break
                 }
               }

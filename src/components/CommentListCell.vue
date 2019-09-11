@@ -40,7 +40,7 @@
             type="textarea"
             rows="1"
             placeholder="填写评论"
-            v-model="rootInputValue"
+            v-model="subInputValue"
           ></el-input>
         </el-form-item>
         <el-form-item class="form-footer">
@@ -67,7 +67,7 @@ export default {
   data () {
     return {
       show: false, // 显示评论框
-      rootInputValue: ''
+      subInputValue: ''
     }
   },
   computed: {
@@ -76,19 +76,18 @@ export default {
   methods: {
     ...mapActions('commentModule', ['getComments', 'submitComment', 'postLikeComment']),
     addComment (commentId) {
-      if (!this.rootInputValue) return
+      if (!this.subInputValue) return
       let postData = {
         article: this.articleId,
         is_root: false,
-        author: 'guest',
         super_comment: commentId,
         belong_root: commentId,
-        content: this.rootInputValue
+        content: this.subInputValue
       }
-      this.submitComment(postData, this)
+      this.submitComment({ postData, self: this })
     },
     giveLike (commentId) {
-      this.postLikeComment({ commentId, self: this})
+      this.postLikeComment({ commentId, self: this })
     }
   }
 }

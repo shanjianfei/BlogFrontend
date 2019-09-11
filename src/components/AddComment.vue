@@ -54,36 +54,6 @@ export default {
   },
   methods: {
     ...mapActions('commentModule', ['submitComment']),
-    submitForm (commnetForm) {
-      let self = this
-      this.$refs[commnetForm].validate((valid) => {
-        if (valid) {
-          let data = self.commentForm
-          data['article'] = self.articleId
-          data['is_root'] = true
-          data['author'] = '游客'
-          addComment(data)
-            .then(function (data) {
-              self.$message(
-                {
-                  message: '评论成功',
-                  type: 'success'
-                })
-              self.$emit('add-comment')
-              self.updateComments(data)
-              self.resetForm(commnetForm)
-            }).catch(function (error) {
-              if (error.status === 401) {
-                self.$message.error('登录后评论')
-              } else {
-                self.$message.error('评论失败')
-              }
-            })
-        } else {
-          self.$message.error('评论失败')
-        }
-      })
-    },
     addComment (formName) {
       let self = this
       this.$refs[formName].validate((valid) => {
@@ -91,7 +61,6 @@ export default {
           let postData = {
             article: self.articleId,
             is_root: true,
-            author: 'guest',
             content: this.commentForm.rootInputValue
           }
           self.submitComment({ postData, self })

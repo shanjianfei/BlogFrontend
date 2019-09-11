@@ -12,8 +12,10 @@ export const getBloggerInfo = () => async('/bloggerinfo/')
 // 获取所有标签
 export const getTags = () => async('/tag/')
 
-// 获取总分类
-export const getCategory = () => async('/categorylevel/')
+// 获取总分类及其子分类
+export const getCategory = name => async((name ? ('/categorylevel/' + name + '/') : '/categorylevel/'))
+
+// export const getSingleCategory = name => async('/categorylevel/' + name + '/')
 
 // 获取blog
 export const getBlogs = () => async('/blog/')

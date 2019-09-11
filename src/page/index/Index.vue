@@ -117,10 +117,10 @@ export default {
   }
 }
 body {
-  @media screen and (min-width: 1200px) {
+  // @media screen and (min-width: 1300px) {
     main {
-      .w(1300px);
+      max-width: (1300px);
     }
-  }
+  // }
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <el-row class="home-content">
-    <el-col class="left" :xs="24" :sm="24" :md="24" :lg="17">
+    <el-col class="left" :lg="16">
       <section-title
         :titleZh="article.titleZh"
         :titleEn="article.titleEn"
@@ -15,14 +15,7 @@
         :key="index"
       ></article-brief-list-cell>
     </el-col>
-    <el-col
-      class="hidden-sm-and-down right"
-      :xs="0"
-      :sm="0"
-      :md="0"
-      :lg="7"
-      style="display: block; padding-left: 20px"
-    >
+    <el-col class="hidden-md-and-down right" :lg="8" style="padding-left: 20px">
       <blogger-info></blogger-info>
       <recommend-list style="margin-bottom: 20px"></recommend-list>
       <hot-article-list style="margin-bottom: 20px"></hot-article-list>

@@ -19,6 +19,7 @@
 
 <script>
 import { util } from '@/config/mixin'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'SubCommentListCell',
@@ -26,6 +27,12 @@ export default {
     subComment: {
       type: Object,
       default: undefined
+    }
+  },
+  methods: {
+    ...mapActions('commentModule', ['postLikeComment']),
+    giveLike (id) {
+      this.postLikeComment({ commentId: id, self: this })
     }
   },
   mixins: [util]

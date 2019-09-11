@@ -1,6 +1,6 @@
 <template>
   <el-row class="article-detail-content" v-if="article">
-    <el-col class="left" :xs="24" :sm="24" :md="24" :lg="16">
+    <el-col class="left" :lg="16">
       <div class="article-detail-container">
         <header class="article-title">
           {{ article.title }}
@@ -79,12 +79,9 @@
       </div>
     </el-col>
     <el-col
-      class="hidden-sm-and-down right"
-      :xs="0"
-      :sm="0"
-      :md="0"
+      class="hidden-md-and-down right"
       :lg="8"
-      style="display: block; padding-left: 20px"
+      style="padding-left: 20px"
     >
       <recommend-list style="margin-bottom: 20px"></recommend-list>
     </el-col>
