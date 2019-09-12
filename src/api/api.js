@@ -13,7 +13,7 @@ export const getBloggerInfo = () => async('/bloggerinfo/')
 export const getTags = () => async('/tag/')
 
 // 获取总分类及其子分类
-export const getCategory = name => async((name ? ('/categorylevel/' + name + '/') : '/categorylevel/'))
+export const getCategory = index => async((index ? ('/categorylevel/?index=' + index) : '/categorylevel/'))
 
 // export const getSingleCategory = name => async('/categorylevel/' + name + '/')
 

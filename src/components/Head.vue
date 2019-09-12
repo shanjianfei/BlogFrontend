@@ -179,7 +179,7 @@ export default {
             subPath += indexPath[i] + '/'
           }
         }
-        this.$router.push({ path: `${indexPath[0]}/category/` + subPath })
+        this.$router.push({ path: `/${indexPath[0]}/category/` + subPath })
       } else if (index === 'timeline') {
         this.$router.push({ path: 'timeline' })
       } else if (index === 'about') {

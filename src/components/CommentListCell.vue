@@ -71,7 +71,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('commentModule', ['articleId']),
+    ...mapState('commentModule', ['articleId'])
   },
   methods: {
     ...mapActions('commentModule', ['getComments', 'submitComment', 'postLikeComment']),

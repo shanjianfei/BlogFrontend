@@ -61,7 +61,11 @@ export default {
 @import "~@/style/base.less";
 .header {
   &-left {
-    text-align: left;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    // text-align: left;
     .el-icon-document {
       .fontS(1.5rem);
       .margin(right, 5px);
