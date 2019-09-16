@@ -181,7 +181,7 @@ export default {
         }
         this.$router.push({ path: `/${indexPath[0]}/category/` + subPath })
       } else if (index === 'timeline') {
-        this.$router.push({ path: 'timeline' })
+        this.$router.push({ path: '/timeline' })
       } else if (index === 'about') {
         this.$router.push({ path: '/article', query: { category: 'about' } })
       } else if (index === 'rss') {

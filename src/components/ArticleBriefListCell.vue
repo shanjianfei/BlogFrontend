@@ -8,7 +8,7 @@
     </div>
     <div class="article" :span="article.picture ? 18 : 24">
       <div class="article-title">
-        <i class="el-icon-lock lock"></i>
+        <i class="el-icon-lock lock" v-if="article.isencrypt"></i>
         <el-link
           :underline="false"
           @click="goDetailArticle(article.id, article.isencrypt)"
@@ -87,6 +87,8 @@ export default {
     goDetailArticle (articleId, isEncrypt) {
       if (isEncrypt) {
         validPassword.call(this, articleId, 'article')
+      } else {
+        this.$router.push({path: '/article/' + articleId})
       }
     }
   },

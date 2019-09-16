@@ -15,7 +15,6 @@ const mutations = {
   updateShowMore (state, {status, text}) {
     state.showMore.status = !!status
     state.showMore.text = text || state.showMore.text
-    console.log(state.showMore)
   },
   updateLoading (state, show) {
     state.loading = show

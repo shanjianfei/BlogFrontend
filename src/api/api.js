@@ -18,7 +18,7 @@ export const getCategory = index => async((index ? ('/categorylevel/?index=' + i
 // export const getSingleCategory = name => async('/categorylevel/' + name + '/')
 
 // 获取blog
-export const getBlogs = () => async('/blog/')
+export const getBlogs = (params) => async('/blog/', 'GET', params)
 
 // 验证博客
 export const verifyBlogPassword = (blogId, password) =>

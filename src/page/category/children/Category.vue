@@ -1,207 +1,175 @@
 <template>
-  <el-row class="category">
-    <el-col class="left" :lg="16">
-      <div class="level level1" v-show="categoryControl.level1.show">
-        <span class="level-title">一级:</span>
-        <ul class="level-items">
-          <li
-            class="level-item"
-            :class="{ active: categoryControl.level1.selected === 0 }"
-            @click="select('level1', 0)"
-          >
-            <el-link :underline="false">全部</el-link>
-          </li>
-          <li
-            class="level-item"
-            :class="{ active: categoryControl.level1.selected === 1 }"
-            @click="select('level1', 1)"
-          >
-            <el-link :underline="false">文章</el-link>
-          </li>
-        </ul>
-      </div>
-      <div class="level level2" v-show="categoryControl.level2.show">
-        <span class="level-title">二级:</span>
-        <ul class="level-items">
-          <li
-            class="level-item"
-            :class="{ active: categoryControl.level2.selected === 0 }"
-            @click="select('level2', 0)"
-          >
-            <el-link :underline="false">全部</el-link>
-          </li>
-          <li
-            class="level-item"
-            :class="
-              categoryControl.level2.selected === index + 1
-                ? 'active'
-                : 'inactive'
-            "
-            v-for="(val, index) in subCategory"
-            :key="index"
-            @click="select('level2', index + 1)"
-          >
-            <el-link :underline="false">{{ val.name }}</el-link>
-          </li>
-        </ul>
-      </div>
+  <div class="category">
+    <div class="level level1" v-show="categoryControl.level1.show">
+      <span class="level-title">一级:</span>
+      <ul class="level-items">
+        <li
+          class="level-item"
+          :class="{ active: categoryControl.level1.selected === '' }"
+          @click="select('level1', '')"
+        >
+          <el-link :underline="false">全部</el-link>
+        </li>
+        <li
+          class="level-item"
+          :class="{ active: categoryControl.level1.selected === 'article' }"
+          @click="select('level1', 'article')"
+        >
+          <el-link :underline="false">文章</el-link>
+        </li>
+      </ul>
+    </div>
+    <div class="level level2" v-show="categoryControl.level2.show">
+      <span class="level-title">二级:</span>
+      <ul class="level-items">
+        <li
+          class="level-item"
+          :class="{ active: categoryControl.level2.selected === '' }"
+          @click="select('level2', '')"
+        >
+          <el-link :underline="false">全部</el-link>
+        </li>
+        <li
+          class="level-item"
+          :class="
+            categoryControl.level2.selected === val.index
+              ? 'active'
+              : 'inactive'
+          "
+          v-for="(val, index) in subCategory"
+          :key="index"
+          @click="select('level2', val.index)"
+        >
+          <el-link :underline="false">{{ val.name }}</el-link>
+        </li>
+      </ul>
+    </div>
 
-      <section-title
-        :titleZh="article.titleZh"
-        :titleEn="article.titleEn"
-        :menus="article.menus"
-        :viewMore="article.viewMore"
-        @handleSelectMenu="handleSelectMenu"
-        @refresh="refreshArticle"
-        style="margin-top: 30px"
-      ></section-title>
-
-      <article-brief-list-cell
-        :article="article"
-        v-for="(article, index) in articles"
-        :key="index"
-      ></article-brief-list-cell>
-    </el-col>
-    <el-col class="hidden-md-and-down right" :lg="8" style="padding-left: 20px">
-      <recommend-list style="margin-bottom: 20px"></recommend-list>
-      <hot-article-list style="margin-bottom: 20px"></hot-article-list>
-      <tags style="margin-bottom: 20px"></tags>
-    </el-col>
-  </el-row>
+    <div class="level level3" v-show="categoryControl.level3.show">
+      <span class="level-title">三级:</span>
+      <ul class="level-items">
+        <li
+          class="level-item"
+          :class="{ active: categoryControl.level3.selected === '' }"
+          @click="select('level3', '')"
+        >
+          <el-link :underline="false">全部</el-link>
+        </li>
+        <li
+          class="level-item"
+          :class="
+            categoryControl.level3.selected === val.index
+              ? 'active'
+              : 'inactive'
+          "
+          v-for="(val, index) in subSubCategory"
+          :key="index"
+          @click="select('level3', val.index)"
+        >
+          <el-link :underline="false">{{ val.name }}</el-link>
+        </li>
+      </ul>
+    </div>
+  </div>
 </template>
 <script>
-import SectionTitle from '@/components/SectionTitle'
-import ArticleBriefListCell from '@/components/ArticleBriefListCell'
-import Tags from '@/components/tagwall/TagList'
-import RecommendList from '@/components/recommend/RecommendList'
-import HotArticleList from '@/components/hotarticle/HotArticleList'
-import { getCategory, getArticles } from '@/api/api'
-import { mapActions, mapState } from 'vuex'
+import { getCategory } from '@/api/api'
+import { mapActions, mapState, mapMutations } from 'vuex'
 export default {
   data () {
     return {
-      baseCategory: undefined,
-      subCategory: undefined,
+      baseCategory: undefined, // 一级
+      subCategory: [], // 二级
+      subSubCategory: [], // 三级
       categoryControl: {
-        level1: { show: true, selected: 0 },
-        level2: { show: false, selected: 0 },
-        level3: { show: false, selected: 0 }
-      },
-      article: {
-        titleZh: '文章',
-        titleEn: 'Article',
-        viewMore: {
-          routeName: 'Article',
-          text: '查看更多'
-        },
-        menus: {
-          latest: {
-            name: 'latest',
-            subMenu: '最新',
-            selected: false,
-            method: 'latest'
-          },
-          hot: {
-            name: 'hot',
-            subMenu: '最热',
-            selected: false,
-            method: 'hot'
-          }
-        }
+        level1: { show: true, selected: '' },
+        level2: { show: false, selected: '' },
+        level3: { show: false, selected: '' }
       }
     }
   },
   computed: {
-    ...mapState('articleList', [
-      'articles',
-      'nextPage',
-      'showTip',
-      'showMore',
-      'loading'
-    ])
+    ...mapState('articleContentModule', ['categorylevel1', 'categorylevel2'])
   },
-  components: { SectionTitle, ArticleBriefListCell, Tags, RecommendList, HotArticleList },
   methods: {
     ...mapActions('articleList', ['getArticleList', 'showLoading']),
+    ...mapMutations('articleContentModule', ['setCategorylevel1', 'setCategorylevel2']),
     getCategory (index) {
       let self = this
       getCategory(index).then(function (response) {
-        console.log(response)
         self.subCategory = response[0].sub_category
+        if (self.categorylevel1) {
+          self.categoryControl.level1.selected = 'article'
+          self.categoryControl.level2.selected = self.categorylevel1
+          self.categoryControl.level2.show = true
+          self.categoryControl.level3.show = true
+          for (let i in self.subCategory) {
+            if (self.subCategory[i].index === self.categorylevel1) {
+              self.subSubCategory = self.subCategory[i]['sub_categorylevel']
+            }
+          }
+        }
+        if (self.categorylevel2) {
+          self.categoryControl.level3.selected = self.categorylevel2
+          self.categoryControl.level3.show = true
+        }
+        let params = {}
+        if (self.categorylevel2 || self.categorylevel1) {
+          params = {
+            index: self.categorylevel2 || self.categorylevel1
+          }
+        }
+        self.getArticleList({ params, reset: true })
       })
     },
-    select (level, index) {
-      this.categoryControl[level]['selected'] = index
-      if (this.categoryControl.level1.selected > 0) {
-        this.categoryControl.level2.show = true
-      } else {
-        this.categoryControl.level2.show = false
-        this.categoryControl.level2.selected = 0
-      }
-
-      if (this.categoryControl.level2.selected > 0) {
-        this.categoryControl.level3.show = true
-      } else {
-        this.categoryControl.level3.show = false
-        this.categoryControl.level3.selected = 0
-      }
-    },
-    latest: function () {
-      let params = {
-        ordering: '-update_time',
-        page: 1,
-        size: 6
-      }
-      this.getArticleList({ params, reset: true })
-    },
-    hot: function () {
-      let params = {
-        ordering: '-click',
-        page: 1,
-        size: 6
-      }
-      this.getArticleList({ params, reset: true })
-    },
-    handleSelectMenu (name) {
-      for (let m in this.article.menus) {
-        if (m !== name) {
-          this.article.menus[m].selected = false
+    select (level, val) {
+      let params = {}
+      this.categoryControl[level]['selected'] = val
+      if (level === 'level1') {
+        if (val !== '') {
+          this.categoryControl.level2.show = true
         } else {
-          this.article.menus[m].selected = true
+          this.categoryControl.level2.show = false
         }
-      }
-      switch (name) {
-        case 'latest':
-          this.latest()
-          break
-        case 'hot':
-          this.hot()
-          break
-      }
-    },
-    refreshArticle () {
-      for (let m in this.article.menus) {
-        this.article.menus[m].selected = false
-      }
-      let params = {
-        page: 1,
-        size: 6
+        this.categoryControl.level2.selected = ''
+        this.categoryControl.level3.show = false
+        this.categoryControl.level3.selected = ''
+      } else if (level === 'level2') {
+        if (val !== '') {
+          for (let i in this.subCategory) {
+            if (this.subCategory[i].index === val) {
+              this.subSubCategory = this.subCategory[i]['sub_categorylevel']
+            }
+          }
+          params = {
+            index: val
+          }
+          this.categoryControl.level3.show = true
+        } else {
+          this.categoryControl.level3.show = false
+        }
+
+        this.categoryControl.level3.selected = ''
+      } else if (level === 'level3') {
+        if (val) {
+          params = {
+            index: val
+          }
+        } else {
+          params = {
+            index: this.categoryControl['level2'].selected
+          }
+        }
       }
       this.getArticleList({ params, reset: true })
     }
   },
   created () {
-    let categorylevel1 = this.$route.params.categorylevel1
-    let categorylevel2 = this.$route.params.categorylevel2
-    let categorylevel3 = this.$route.params.categorylevel3
+    this.setCategorylevel1(this.$route.params.categorylevel1)
+    this.setCategorylevel2(this.$route.params.categorylevel2)
     let index = this.$route.path.split('/')[1]
     this.baseCategory = index
     this.getCategory(index)
-    let params = {
-      page: 1,
-      size: 6
-    }
-    this.getArticleList({ params, reset: true })
   }
 }
 </script>

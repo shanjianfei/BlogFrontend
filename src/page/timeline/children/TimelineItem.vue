@@ -23,7 +23,7 @@
           </div>
           <el-collapse-transition>
             <p class="article-desc" v-show="show">
-              {{article.brief_introduction}}
+              {{article.desc}}
             </p>
           </el-collapse-transition>
         </div>

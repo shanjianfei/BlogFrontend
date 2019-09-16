@@ -1,24 +1,28 @@
 <template>
   <div class="main loading-text timeline-page">
     <el-row>
-      <el-col :xs="24"
-              :sm="24"
-              :md="24"
-              :lg="16">
-        <div class="timeline-content">
-          <timeline-head @change="handleChange"
-                         @lasted="getLastedBlogs"
-                         @hot="getHotBlogs"
-                         @default="getBlogs"></timeline-head>
+      <el-col :xs="24" :sm="24" :md="24" :lg="16">
+        wer
+        <div class="timeline-content" v-if="blogs.length > 0">
+          <timeline-head
+            @change="handleChange"
+            @lasted="getLastedBlogs"
+            @hot="getHotBlogs"
+            @default="getBlogs"
+          ></timeline-head>
           <el-timeline>
-            <timeline-item v-for="(item, index) in articles"
-                           :article="item"
-                           :key="index"></timeline-item>
+            <timeline-item
+              v-for="(item, index) in blogs"
+              :article="item"
+              :key="index"
+            ></timeline-item>
           </el-timeline>
-          <show-more-button @loadMore="loadMoreArticles"
-                            :status="showMore"></show-more-button>
+          <show-more-button
+            @loadMore="loadMoreArticles"
+            :status="showMore"
+          ></show-more-button>
         </div>
-        <el-timeline>
+        <!-- <el-timeline v-if="blogs.length>0">
           <el-timeline-item v-for="(item, index) in blogs"
                             :timestamp="item.create_time | formatDate"
                             placement="top"
@@ -28,15 +32,17 @@
               <p>王小虎 提交于 2018/4/12 20:46</p>
             </el-card>
           </el-timeline-item>
-        </el-timeline>
-        <tips-no-data v-if="articles.length === 0"></tips-no-data>
+        </el-timeline> -->
+        <tips-no-data v-if="blogs.length === 0"></tips-no-data>
       </el-col>
-      <el-col class="hidden-md-and-down"
-              :xs="0"
-              :sm="0"
-              :md="0"
-              :lg="8"
-              style="display: block">
+      <el-col
+        class="hidden-md-and-down"
+        :xs="0"
+        :sm="0"
+        :md="0"
+        :lg="8"
+        style="display: block"
+      >
         <recommend style="margin-bottom: 20px"></recommend>
         <hot-article style="margin-bottom: 20px"></hot-article>
         <tag-list style="margin-bottom: 20px"></tag-list>
@@ -64,23 +70,18 @@ export default {
     return {
       page: 1,
       size: 6,
-      blogs: []
     }
   },
   computed: mapState('timeline', [
-    'articles',
+    'blogs',
     'nextPage',
     'dateSelect',
     'selected',
     'showMore'
   ]),
   components: { TipsNoData, ShowMoreButton, TagList, Recommend, HotArticle, TimelineHead, TimelineItem },
-  mixins: [util],
   created: function () {
-    let self = this
-    getBlogs().then(function (data) {
-      self.blogs = data
-    })
+    this.getBlogs()
   },
   methods: {
     ...mapActions('timeline', ['getTimelineInfo', 'updateSelect']),
@@ -94,11 +95,11 @@ export default {
         reset: true
       })
     },
-    getLastedArticle () {
+    getLastedBlogs () {
       let params = {
-        ordering: '-update_time',
         page: this.page,
-        size: this.size
+        size: this.size,
+        ordering: '-create_time',
       }
       this.updateSelect('lasted')
       this.getTimelineInfo({
@@ -106,24 +107,32 @@ export default {
         reset: true
       })
     },
+    getHotBlogs () {
+      let params = {
+        page: this.page,
+        size: this.size,
+        ordering: '-click',
+      }
+      this.updateSelect('hot')
+      this.getTimelineInfo({
+        params,
+        reset: true
+      })
+    },
     handleChange (dateSelected) { // 按时间范围过滤article
-      let self = this
-      this.selected = 'duration'
       let formatDate = this.$options.filters.formatDate
       let minDatetime = formatDate(dateSelected[0], 'yyyy-MM-dd')
       let maxDatetime = formatDate(dateSelected[1], 'yyyy-MM-dd')
-      getDurationArticle(minDatetime, maxDatetime, this.page, this.size)
-        .then(function (data) {
-          self.articles = data.results
-          self.page = data.next
-          if (!data.next) {
-            self.showMoreButtonText.enable = false
-            self.showMoreButtonText.text = '没有更多了'
-          } else {
-            self.showMoreButtonText.enable = true
-            self.showMoreButtonText.text = '显示更多'
-          }
-        })
+      let params = {
+        page: this.page,
+        size: this.size,
+        min_datetime: minDatetime,
+        max_datetime: maxDatetime
+      }
+      this.getTimelineInfo({
+        params,
+        reset: true
+      })
     },
     loadMoreArticles () {
       let params = {
@@ -137,7 +146,8 @@ export default {
       }
       this.getTimelineInfo({ params })
     }
-  }
+  },
+  mixins: [util]
 }
 </script>
 <style scoped lang="less">

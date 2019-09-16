@@ -1,7 +1,7 @@
-import {getArticleList} from '@/api/api'
+import { getBlogs } from '@/api/api'
 
 const state = {
-  articles: [],
+  blogs: [],
   nextPage: undefined,
   dateSelect: undefined,
   selected: 'default', // 当前选的过滤条件 default hot lasted date
@@ -13,7 +13,7 @@ const state = {
 
 const mutations = {
   reset (state) {
-    state.articles = []
+    state.blogs = []
     state.nextPage = undefined
     state.showMore = {
       status: false,
@@ -33,13 +33,13 @@ const mutations = {
       state.showMore.status = false
       state.showMore.text = '加载完毕'
     }
-    state.articles = state.articles.concat(data.results)
+    state.blogs = state.blogs.concat(data.results)
   }
 }
 
 const actions = {
-  getTimelineInfo ({commit}, {params, reset}) {
-    getArticleList(params).then(function (data) {
+  getTimelineInfo ({ commit }, { params, reset }) {
+    getBlogs(params).then(function (data) {
       reset = reset || false
       if (reset) {
         commit('reset')
@@ -47,8 +47,8 @@ const actions = {
       commit('updateTimeline', data)
     })
   },
-  updateSelect ({commint}, type) {
-    commint('select', type)
+  updateSelect ({ commit }, type) {
+    commit('select', type)
   }
 }
 

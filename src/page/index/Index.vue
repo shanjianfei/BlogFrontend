@@ -4,7 +4,7 @@
       <router-view name="header"></router-view>
     </header>
     <main>
-      <router-view name="main"></router-view>
+      <router-view name="main" :key="$route.fullPath"></router-view>
     </main>
     <footer>
       <router-view name="footer"></router-view>

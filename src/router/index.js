@@ -59,7 +59,7 @@ export default new Router({
           }
         },
         {
-          path: 'articles/category/:categorylevel1?/:categorylevel2?/:categorylevel3?',
+          path: 'articles/category/:categorylevel1?/:categorylevel2?',
           name: 'ArticleListContent',
           components: {
             header: Header,

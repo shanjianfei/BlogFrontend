@@ -5,6 +5,7 @@ import ArticleList from './modules/articleList'
 import UserModule from './modules/userModule'
 import UserRegister from './modules/userRegister'
 import CommentModule from './modules/commentModule'
+import ArticleContentModule from './modules/articleContentModule'
 
 Vue.use(Vuex)
 
@@ -38,7 +39,8 @@ const store = new Vuex.Store({
     articleList: ArticleList,
     userModule: UserModule,
     userRegister: UserRegister,
-    commentModule: CommentModule
+    commentModule: CommentModule,
+    articleContentModule: ArticleContentModule
   }
 })
 
