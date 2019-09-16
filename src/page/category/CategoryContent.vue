@@ -11,7 +11,6 @@
         @refresh="refreshArticle"
         style="margin-top: 30px"
       ></section-title>
-
       <article-brief-list-cell
         :article="article"
         v-for="(article, index) in articles"

@@ -3,7 +3,7 @@
     <div class="article-title">
       <el-link
         :underline="false"
-        @click="$router.push({ path: 'article/' + article.id })"
+        @click="$router.push({ path: '/article/' + article.id })"
         style="color: #303133; font-size: 18px"
       >
         {{ article.title }}

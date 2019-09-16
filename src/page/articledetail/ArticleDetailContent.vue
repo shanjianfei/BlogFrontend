@@ -84,6 +84,8 @@
       style="padding-left: 20px"
     >
       <recommend-list style="margin-bottom: 20px"></recommend-list>
+      <hot-article-list style="margin-bottom: 20px"></hot-article-list>
+      <tags style="margin-bottom: 20px"></tags>
     </el-col>
   </el-row>
 </template>
@@ -92,12 +94,14 @@
 import AddComment from '@/components/AddComment'
 import ShowComment from '@/components/ShowComment'
 import RecommendList from '@/components/recommend/RecommendList'
+import Tags from '@/components/tagwall/TagList'
+import HotArticleList from '@/components/hotarticle/HotArticleList'
 import { getArticleDetail, articleLike, getComments } from '@/api/api'
 import { validPassword } from '@/config/mixin'
 import Vue from 'vue'
 export default {
   name: 'ArticleDetailContent',
-  components: { AddComment, ShowComment, RecommendList },
+  components: { AddComment, ShowComment, RecommendList, Tags, HotArticleList },
   data () {
     return {
       articleId: '',

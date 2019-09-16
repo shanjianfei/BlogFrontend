@@ -2,7 +2,6 @@
   <div class="main loading-text timeline-page">
     <el-row>
       <el-col :xs="24" :sm="24" :md="24" :lg="16">
-        wer
         <div class="timeline-content" v-if="blogs.length > 0">
           <timeline-head
             @change="handleChange"
@@ -33,7 +32,9 @@
             </el-card>
           </el-timeline-item>
         </el-timeline> -->
-        <tips-no-data v-if="blogs.length === 0"></tips-no-data>
+        <tips-no-data :showTip="blogs.length === 0"></tips-no-data>
+        <tips-no-data ></tips-no-data>
+
       </el-col>
       <el-col
         class="hidden-md-and-down"
@@ -58,7 +59,6 @@ import TagList from '@/components/tagwall/TagList'
 import Recommend from '@/components/recommend/RecommendList'
 import HotArticle from '@/components/hotarticle/HotArticleList'
 import TimelineHead from './children/TimelineHead'
-import { getDurationArticle, getBlogs } from '@/api/api'
 import { util } from '@/config/mixin'
 import TimelineItem from './children/TimelineItem'
 
