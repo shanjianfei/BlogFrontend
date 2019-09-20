@@ -33,12 +33,12 @@
                 <el-submenu :index="item.index"
                             v-for="(item, index) in category"
                             :key="index"
-                            v-if="item.sub_category.length > 0">
+                            v-if="item.sub_category.length>0">
                   <template slot="title">{{ item.name }}</template>
 
                   <el-menu-item :index="category1.index"
                                 v-for="(category1, index1) in item.sub_category"
-                                v-if="category1.sub_categorylevel.length === 0"
+                                v-if="category1.sub_categorylevel.length===0 && category1.name!=='about'"
                                 :key="index1">{{ category1.name }}</el-menu-item>
                   <el-submenu :index="category1.index"
                               v-for="(category1, index1) in item.sub_category"
@@ -127,8 +127,8 @@
 import { mapState } from 'vuex'
 import { getImageUrl } from '@/config/util'
 import { getCategory } from '@/api/api'
-import InputSearch from '@/components/InputSearch'
-import AsideNav from '@/components/AsideNav'
+import InputSearch from '@/components/header/InputSearch'
+import AsideNav from '@/components/header/AsideNav'
 
 export default {
   name: 'Head',
@@ -183,7 +183,7 @@ export default {
       } else if (index === 'timeline') {
         this.$router.push({ path: '/timeline' })
       } else if (index === 'about') {
-        this.$router.push({ path: '/article', query: { category: 'about' } })
+        this.$router.push({ path: '/article/9' })
       } else if (index === 'rss') {
         let { href } = this.$router.resolve('/rss')
         window.open(href)

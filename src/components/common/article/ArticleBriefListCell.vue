@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import LinkShowMore from '@/components/LinkShowMore'
+import LinkShowMore from '@/components/common/LinkShowMore'
 import { getImageUrl } from '@/config/util'
 import { util, validPassword } from '@/config/mixin'
 

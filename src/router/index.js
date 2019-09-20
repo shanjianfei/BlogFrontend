@@ -1,18 +1,15 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Index from '@/page/index/Index'
-import HomeContent from '@/page/home/HomeContent'
-import CategoryContent from '@/page/category/CategoryContent'
-import ArticleDetailContent from '@/page/articledetail/ArticleDetailContent'
-import TimeLine from '@/page/timeline/TimeLine'
+import Index from '@/components/index/Index'
+import HomeContent from '@/components/page/home/HomeContent'
+import CategoryContent from '@/components/page/category/CategoryContent'
+import ArticleDetailContent from '@/components/page/articledetail/ArticleDetailContent'
+import TimeLine from '@/components/page/timeline/TimeLine'
+import Header from '@/components/header/Header'
+import Footer from '@/components/footer/Footer'
 
-import Article from '@/components/article/Article'
-
-import Header from '@/components/Head'
-import Footer from '@/components/Footer'
-
-import RSS from '@/page/rss/Rss'
-import Login from '@/page/login/Login'
+import RSS from '@/components/page/rss/Rss'
+import Login from '@/components/page/login/Login'
 
 Vue.use(Router)
 
@@ -28,15 +25,6 @@ export default new Router({
           components: {
             header: Header,
             main: HomeContent,
-            footer: Footer
-          }
-        },
-        {
-          path: 'article',
-          name: 'Article',
-          components: {
-            header: Header,
-            main: Article,
             footer: Footer
           }
         },

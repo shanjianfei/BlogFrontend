@@ -19,7 +19,7 @@
 <script>
 import { giveLikeToCommnet } from '@/api/api'
 import Vue from 'vue'
-import CommentListCell from '@/components/CommentListCell'
+import CommentListCell from '@/components/common/comment/CommentListCell'
 import { mapState, mapMutations, mapActions } from 'vuex'
 
 export default {

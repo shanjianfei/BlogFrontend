@@ -12,8 +12,8 @@
 </template>
 <script>
 import { getArticles } from '@/api/api'
-import HotArticleListCell from '@/components/hotarticle/children/HotArticleListCell'
-import SubnavSectionTitle from '@/components/SubnavSectionTitle'
+import HotArticleListCell from './children/HotArticleListCell'
+import SubnavSectionTitle from '@/components/common/SubnavSectionTitle'
 
 export default {
   name: 'HotArticleList',

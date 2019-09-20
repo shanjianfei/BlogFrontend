@@ -13,6 +13,9 @@ const mutations = {
     state.rootComments = comments
   },
   updateRootComments (state, comment) {
+    comment['user'] = {
+      username: localStorage.getItem('currentUser_name')
+    }
     let isRoot = comment['is_root']
     if (isRoot) {
       // 根评论
@@ -61,7 +64,6 @@ const actions = {
   postLikeComment ({ state }, { commentId, self }) {
     giveLikeToCommnet(commentId)
       .then(function (response) {
-        console.log(response)
         if (response.result === 'success') {
           for (let i in state.rootComments) {
             if (state.rootComments[i].id === commentId) {

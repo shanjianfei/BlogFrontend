@@ -14,7 +14,7 @@
 <script>
 import { getArticles } from '@/api/api'
 import RecommendListCell from './children/RecommendListCell'
-import SubnavSectionTitle from '@/components/SubnavSectionTitle'
+import SubnavSectionTitle from '@/components/common/SubnavSectionTitle'
 
 export default {
   name: 'Recommend',

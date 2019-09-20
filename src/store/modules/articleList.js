@@ -2,6 +2,7 @@ import {getArticles} from '@/api/api'
 
 const state = {
   articles: [], // 显示在首页的文章
+  topArticles: [], // 置顶文章
   nextPage: undefined, // 分页获取的结果
   showTip: false, // 显示没有内容提示
   showMore: { // 显示更多按钮
@@ -44,6 +45,9 @@ const mutations = {
       state.showTip = false
     }
     state.articles = state.articles.concat(data.results)
+  },
+  updateTopArticles (state, data) {
+    state.topArticles = data
   }
 }
 
@@ -55,6 +59,16 @@ const actions = {
       }
       commit('updateLoading', false)
       commit('updateArticleList', data)
+    })
+  },
+  getTopArticles ({commit}) {
+    let params = {
+      page: 1,
+      size: 6,
+      istop: 2
+    }
+    getArticles(params).then(function (data) {
+      commit('updateTopArticles', data.results)
     })
   },
   showLoading ({commit}) {

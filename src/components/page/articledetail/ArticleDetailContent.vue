@@ -91,11 +91,11 @@
 </template>
 
 <script>
-import AddComment from '@/components/AddComment'
-import ShowComment from '@/components/ShowComment'
-import RecommendList from '@/components/recommend/RecommendList'
-import Tags from '@/components/tagwall/TagList'
-import HotArticleList from '@/components/hotarticle/HotArticleList'
+import AddComment from '@/components/common/comment/AddComment'
+import ShowComment from '@/components/common/comment/ShowComment'
+import RecommendList from '@/components/common/recommend/RecommendList'
+import Tags from '@/components/common/tagwall/TagList'
+import HotArticleList from '@/components/common/hotarticle/HotArticleList'
 import { getArticleDetail, articleLike, getComments } from '@/api/api'
 import { validPassword } from '@/config/mixin'
 import Vue from 'vue'

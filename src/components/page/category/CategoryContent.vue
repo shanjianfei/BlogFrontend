@@ -1,6 +1,7 @@
 <template>
-  <el-row class="home-content">
+  <el-row class="category-content">
     <el-col class="left" :lg="16">
+      <category></category>
       <section-title
         :titleZh="article.titleZh"
         :titleEn="article.titleEn"
@@ -8,6 +9,7 @@
         :viewMore="article.viewMore"
         @handleSelectMenu="handleSelectMenu"
         @refresh="refreshArticle"
+        style="margin-top: 30px"
       ></section-title>
       <article-brief-list-cell
         :article="article"
@@ -16,7 +18,6 @@
       ></article-brief-list-cell>
     </el-col>
     <el-col class="hidden-md-and-down right" :lg="8" style="padding-left: 20px">
-      <blogger-info></blogger-info>
       <recommend-list style="margin-bottom: 20px"></recommend-list>
       <hot-article-list style="margin-bottom: 20px"></hot-article-list>
       <tags style="margin-bottom: 20px"></tags>
@@ -24,27 +25,20 @@
   </el-row>
 </template>
 <script>
-import SectionTitle from '@/components/SectionTitle'
-import ArticleBriefListCell from '@/components/ArticleBriefListCell'
-import Tags from '@/components/tagwall/TagList'
-import RecommendList from '@/components/recommend/RecommendList'
-import HotArticleList from '@/components/hotarticle/HotArticleList'
-import BloggerInfo from '@/components/BloggerInfo'
-
+import Category from './children/Category'
+import SectionTitle from '@/components/common/SectionTitle'
+import ArticleBriefListCell from '@/components/common/article/ArticleBriefListCell'
+import Tags from '@/components/common/tagwall/TagList'
+import RecommendList from '@/components/common/recommend/RecommendList'
+import HotArticleList from '@/components/common/hotarticle/HotArticleList'
 import { mapActions, mapState } from 'vuex'
 
 export default {
-  name: 'HomeContent',
   data () {
     return {
-      ordering: '',
       article: {
         titleZh: '文章',
         titleEn: 'Article',
-        viewMore: {
-          routeName: 'Article',
-          text: '查看更多'
-        },
         menus: {
           latest: {
             name: 'latest',
@@ -71,14 +65,7 @@ export default {
       'loading'
     ])
   },
-  components: {
-    SectionTitle,
-    ArticleBriefListCell,
-    Tags,
-    RecommendList,
-    HotArticleList,
-    BloggerInfo
-  },
+  components: { Category, SectionTitle, ArticleBriefListCell, Tags, RecommendList, HotArticleList },
   methods: {
     ...mapActions('articleList', ['getArticleList', 'showLoading']),
     latest: function () {
@@ -124,13 +111,6 @@ export default {
       }
       this.getArticleList({ params, reset: true })
     }
-  },
-  created: function () {
-    let params = {
-      page: 1,
-      size: 6
-    }
-    this.getArticleList({ params, reset: true })
   }
 }
 </script>

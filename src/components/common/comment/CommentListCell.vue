@@ -2,6 +2,7 @@
   <div class="comment-list-cell">
     <div class="comment-content">
       <el-row class="comment-header">
+        <img src=>
         <span>{{ comment.user.username }}</span>
         <span>·</span>
         <span>{{ comment.create_time | formatDate("yyyy年MM月dd日") }}</span>
@@ -56,7 +57,7 @@
 
 <script>
 import { util, commentUtil } from '@/config/mixin'
-import SubCommentListCell from '@/components/SubCommentListCell'
+import SubCommentListCell from '@/components/common/comment/SubCommentListCell'
 import { mapState, mapActions } from 'vuex'
 
 export default {
@@ -76,6 +77,7 @@ export default {
   methods: {
     ...mapActions('commentModule', ['getComments', 'submitComment', 'postLikeComment']),
     addComment (commentId) {
+      console.log(111)
       if (!this.subInputValue) return
       let postData = {
         article: this.articleId,

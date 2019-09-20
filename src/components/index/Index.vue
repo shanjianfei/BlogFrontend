@@ -32,7 +32,6 @@
 
 <script>
 import { getSiteInfo } from '@/api/api'
-import Top from '@/components/Top'
 export default {
   name: 'Index',
   data () {
@@ -41,7 +40,6 @@ export default {
       asideNav: false
     }
   },
-  components: { Top },
   methods: {
     backTop () { // 页面返回到顶部
       window.scrollTo(

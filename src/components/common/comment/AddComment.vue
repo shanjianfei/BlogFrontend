@@ -34,7 +34,6 @@
   </div>
 </template>
 <script>
-// import { addComment } from '@/api/api'
 import { mapActions } from 'vuex'
 
 export default {

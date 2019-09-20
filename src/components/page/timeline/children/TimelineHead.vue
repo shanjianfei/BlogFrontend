@@ -11,19 +11,31 @@
         <li
           class="default"
           :class="{ active: activeName === 0 }"
-          @click="activeName = 0; $emit('default')">
+          @click="
+            activeName = 0;
+            $emit('setFilterConditions', '');
+          "
+        >
           <span>顺序</span>
         </li>
         <li
           class="lasted"
           :class="{ active: activeName === 1 }"
-          @click="activeName = 1; $emit('lasted')">
+          @click="
+            activeName = 1;
+            $emit('setFilterConditions', 'lasted');
+          "
+        >
           <span>最新</span>
         </li>
         <li
           class="hot"
           :class="{ active: activeName === 2 }"
-          @click="activeName = 2; $emit('hot')">
+          @click="
+            activeName = 2;
+            $emit('setFilterConditions', 'hot');
+          "
+        >
           <span>最热</span>
         </li>
         <li>
@@ -33,10 +45,12 @@
             align="right"
             unlink-panels
             range-separator="-"
+            value-format="yyyy-MM-dd"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
             :picker-options="pickerOptions"
-            @change="$emit('change', dateSelected)">
+            @change="$emit('setFilterConditions', 'pick', dateSelected)"
+          >
           </el-date-picker>
         </li>
       </ul>
@@ -57,7 +71,7 @@ export default {
             const end = new Date()
             const start = new Date()
             start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-            picker.$emit('pick', [start, end])
+            picker.$emit('setFilterConditions', 'pick', [start, end])
           }
         }, {
           text: '最近一个月',
@@ -65,7 +79,7 @@ export default {
             const end = new Date()
             const start = new Date()
             start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-            picker.$emit('pick', [start, end])
+            picker.$emit('setFilterConditions', 'pick', [start, end])
           }
         }, {
           text: '最近三个月',
@@ -73,7 +87,7 @@ export default {
             const end = new Date()
             const start = new Date()
             start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-            picker.$emit('pick', [start, end])
+            picker.$emit('setFilterConditions', 'pick', [start, end])
           }
         }]
       },
@@ -84,62 +98,63 @@ export default {
 </script>
 
 <style scoped lang="less">
-  @import '~@/style/mixin';
-  @import '~@/style/base';
-  .timeline-header {
+@import "~@/style/mixin";
+@import "~@/style/base";
+.timeline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+
+  &-left {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    text-align: left;
-
-    &-left {
-      display: flex;
-      align-items: center;
-      .el-icon-document {
-        .fontS(1.5rem);
-        .margin(right, 5px);
-        .fontC(@common-yellow);
-      }
-
-      .title-zh, .title-en {
-        .fontW(500);
-      }
-
-      .title-zh {
-        .fontS(1.5rem);
-      }
-
-      .title-en {
-        .fontS(1.2rem);
-      }
-
-      .vertical-line {
-        .displayI;
-        .h(25px);
-        .margin(0, 5px);
-        border-right: 1px solid @base-black;
-      }
+    .el-icon-document {
+      .fontS(1.5rem);
+      .margin(right, 5px);
+      .fontC(@common-yellow);
     }
 
-    &-right {
-      text-align: right;
+    .title-zh,
+    .title-en {
+      .fontW(500);
+    }
 
-      ul {
-        .active {
-          border-bottom: 3px solid @common-blue;
-        }
+    .title-zh {
+      .fontS(1.5rem);
+    }
 
-        li {
-          .margin(right, 10px);
-          .h(2rem);
-          .displayI;
-          cursor: pointer;
+    .title-en {
+      .fontS(1.2rem);
+    }
 
-          span {
-            line-height: 2rem;
-          }
+    .vertical-line {
+      .displayI;
+      .h(25px);
+      .margin(0, 5px);
+      border-right: 1px solid @base-black;
+    }
+  }
+
+  &-right {
+    text-align: right;
+
+    ul {
+      .active {
+        border-bottom: 3px solid @common-blue;
+      }
+
+      li {
+        .margin(right, 10px);
+        .h(2rem);
+        .displayI;
+        cursor: pointer;
+
+        span {
+          line-height: 2rem;
         }
       }
     }
   }
+}
 </style>
