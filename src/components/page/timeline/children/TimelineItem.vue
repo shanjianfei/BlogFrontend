@@ -57,7 +57,6 @@ export default {
 .timeline-item {
   display: flex;
   align-items: flex-start;
-  
   .left {
     .margin(right, 15px);
   }

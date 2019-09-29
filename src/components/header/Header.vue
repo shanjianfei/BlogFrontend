@@ -24,11 +24,11 @@
               <input-search @search="search"></input-search>
             </el-col>
             <el-col :span="12">
-              <el-menu :default-active="activeItem"
-                       mode="horizontal"
+              <el-menu mode="horizontal"
                        background-color="#2c3e50"
                        text-color="#fff"
                        active-text-color="#ffd04b"
+                       :default-active="onRoutes"
                        @select="handleSelect">
                 <el-submenu :index="item.index"
                             v-for="(item, index) in category"
@@ -134,7 +134,6 @@ export default {
   name: 'Head',
   data () {
     return {
-      activeItem: '',
       show: true,
       pageYOffset: 0,
       showSearch: false,
@@ -146,7 +145,15 @@ export default {
     ...mapState({
       logo: 'logo',
       motto: 'motto'
-    })
+    }),
+    onRoutes () {
+      let path = this.$route.path
+      let index = path.split('/')[1]
+      if (index === 'article' && path.split('/')[2] === '9') {
+        return 'about'
+      }
+      return index
+    }
   },
   components: { InputSearch, AsideNav },
   methods: {

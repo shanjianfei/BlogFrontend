@@ -1,4 +1,4 @@
-let baseUrl = 'api/'
+let baseUrl = '/api/'
 let imageBaseUrl = ''
 
 if (process.env.NODE_ENV === 'development') {
@@ -6,7 +6,4 @@ if (process.env.NODE_ENV === 'development') {
 } else if (process.env.NODE_ENV === 'production') {
   imageBaseUrl = ''
 }
-export {
-  baseUrl,
-  imageBaseUrl
-}
+export { baseUrl, imageBaseUrl }

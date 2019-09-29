@@ -9,11 +9,11 @@
           ></timeline-head>
 
           <el-timeline>
-            <template v-for="(value, key) in blogs">
+            <template v-for="(blogsYear, year) in blogs">
               <el-timeline-item
                 class="year"
-                :key="key"
-                :timestamp="key + '年'"
+                :key="year"
+                :timestamp="year + '年 | ' + getBlogCount(year) + ' 篇'"
                 placement="top"
                 size="large"
                 icon="el-icon-s-order"
@@ -22,16 +22,16 @@
               >
               </el-timeline-item>
               <el-timeline-item
-                v-for="(blogs, month) in value"
+                v-for="(blogsMonth, month) in blogsYear"
                 class="month"
                 :key="month"
-                :timestamp="month + '月'"
+                :timestamp="month + '月 | ' + getBlogCount(year, month) + ' 篇'"
                 placement="top"
                 icon="el-icon-time"
                 type="success"
               >
                 <el-card
-                  v-for="(blog, index) in blogs"
+                  v-for="(blog, index) in blogsMonth"
                   :key="index"
                   style="margin-top: 10px"
                 >
@@ -43,7 +43,7 @@
               size="large"
               icon="el-icon-more-outline"
               type="primary"
-              v-if="showMore"
+              v-if="!showMore.show"
             >
             </el-timeline-item>
             <el-timeline-item
@@ -60,7 +60,6 @@
           ></show-more-button>
         </div>
         <tips-no-data :tip="tip"></tips-no-data>
-        {{ blogs }}
       </el-col>
       <el-col
         class="hidden-md-and-down"
@@ -95,7 +94,7 @@ export default {
   data () {
     return {
       page: 1,
-      size: 6,
+      size: 20,
       ordering: '',
       minDatetime: '',
       maxDatetime: ''
@@ -157,6 +156,19 @@ export default {
         params: this.getParams(),
         reset: true
       })
+    },
+    getBlogCount (year, month) {
+      let total = 0
+      if (year && (year in this.blogs)) {
+        if (month && (month in this.blogs[year])) {
+          return this.blogs[year][month].length
+        } else {
+          for (let m in this.blogs[year]) {
+            total += this.blogs[year][m].length
+          }
+        }
+      }
+      return total
     }
   },
   mixins: [util]
@@ -171,11 +183,9 @@ export default {
   .timeline-content {
     .el-timeline {
       .margin(top, 20px);
+      .padding(0, 10px);
     }
   }
-  // .block {
-  //   text-align: left;
-  // }
 }
 .el-timeline-item__node--large {
   left: -13px;

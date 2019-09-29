@@ -2,7 +2,7 @@
   <div class="comment-list-cell">
     <div class="comment-content">
       <el-row class="comment-header">
-        <img src=>
+        <img class="avatar" :src="comment.user.avatar">
         <span>{{ comment.user.username }}</span>
         <span>·</span>
         <span>{{ comment.create_time | formatDate("yyyy年MM月dd日") }}</span>
@@ -102,13 +102,20 @@ export default {
 .comment-list-cell {
   .comment-content {
     .comment-header {
+      display: flex;
+      align-items: center;
       span:first-child {
         .fontC(@common-blue);
         .fontW700;
       }
-
       span:last-child {
         .fontSC(0.8rem, @common-gray);
+      }
+      .avatar {
+        .margin(right, 12px);
+        .h(45px);
+        .w(45px);
+        .borderRadius(50%);
       }
     }
 

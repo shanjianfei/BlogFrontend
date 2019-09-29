@@ -13,67 +13,80 @@ import Login from '@/components/page/login/Login'
 
 Vue.use(Router)
 
-export default new Router({
-  routes: [
-    {
-      path: '/',
-      component: Index,
-      redirect: '/home',
-      children: [
-        {
-          path: 'home',
-          components: {
-            header: Header,
-            main: HomeContent,
-            footer: Footer
-          }
-        },
-        {
-          path: 'article/:id',
-          name: 'ArticleDetailContent',
-          components: {
-            header: Header,
-            main: ArticleDetailContent,
-            footer: Footer
-          }
-        },
-        {
-          path: 'articles',
-          name: 'Articles',
-          components: {
-            header: Header,
-            main: CategoryContent,
-            footer: Footer
-          }
-        },
-        {
-          path: 'articles/category/:categorylevel1?/:categorylevel2?',
-          name: 'ArticleListContent',
-          components: {
-            header: Header,
-            main: CategoryContent,
-            footer: Footer
-          }
-        },
-        {
-          path: 'timeline',
-          name: 'TimeLine',
-          components: {
-            header: Header,
-            main: TimeLine,
-            footer: Footer
-          }
-        }
-      ]
-    },
-    {
-      path: '/rss',
-      component: RSS
-    },
-    {
-      path: '/login',
-      name: 'Login',
-      component: Login
+const scrollBehavior = function (to, from, savedPosition) {
+  if (to.hash) {
+    return {
+      // 通过 to.hash 的值來找到对应的元素
+      selector: to.hash
     }
-  ]
-})
+  }
+}
+
+export default function createRouter () {
+  return new Router({
+    routes: [
+      {
+        path: '/',
+        component: Index,
+        redirect: '/home',
+        children: [
+          {
+            path: 'home',
+            components: {
+              header: Header,
+              main: HomeContent,
+              footer: Footer
+            }
+          },
+          {
+            path: 'article/:id',
+            name: 'ArticleDetailContent',
+            components: {
+              header: Header,
+              main: ArticleDetailContent,
+              footer: Footer
+            }
+          },
+          {
+            path: 'articles',
+            name: 'Articles',
+            components: {
+              header: Header,
+              main: CategoryContent,
+              footer: Footer
+            }
+          },
+          {
+            path: 'articles/category/:categorylevel1?/:categorylevel2?',
+            name: 'ArticleListContent',
+            components: {
+              header: Header,
+              main: CategoryContent,
+              footer: Footer
+            }
+          },
+          {
+            path: 'timeline',
+            name: 'TimeLine',
+            components: {
+              header: Header,
+              main: TimeLine,
+              footer: Footer
+            }
+          }
+        ]
+      },
+      {
+        path: '/rss',
+        component: RSS
+      },
+      {
+        path: '/login',
+        name: 'Login',
+        component: Login
+      }
+    ],
+    mode: 'history',
+    scrollBehavior
+  })
+}

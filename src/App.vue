@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
@@ -11,13 +11,15 @@ export default {
 </script>
 
 <style lang="less">
-  @import "./style/common.less";
-  @import "./style/base";
-  #app {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: @main-word;
-    height: 100%;
-  }
+@import "element-ui/lib/theme-chalk/index.css";
+@import "element-ui/lib/theme-chalk/display.css";
+@import "./style/common.less";
+@import "./style/base";
+#app {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: @main-word;
+  height: 100%;
+}
 </style>

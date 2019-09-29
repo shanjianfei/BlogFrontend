@@ -4,6 +4,7 @@
       {{ subComment.content }}
     </el-row>
     <el-row class="sub-comment-bottom">
+      <img class="avatar" :src="subComment.user.avatar">
       <span class="author">--{{ subComment.user.username }}</span>
       <span>·</span>
       <span class="createtime">{{
@@ -52,6 +53,12 @@ export default {
   .sub-comment-bottom {
     .margin(top, 8px);
     .flexV;
+    .avatar {
+        .margin(right, 8px);
+        .h(25px);
+        .w(25px);
+        .borderRadius(50%);
+      }
 
     .author {
       .fontW700;
