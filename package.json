@@ -13,7 +13,7 @@
     "build": "rimraf dist && npm run build:client && npm run build:server"
   },
   "dependencies": {
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "element-ui": "^2.10.1",
     "jshint": "^2.10.2",
     "tocbot": "^4.8.0",
